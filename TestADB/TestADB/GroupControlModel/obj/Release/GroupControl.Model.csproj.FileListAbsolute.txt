@@ -1,0 +1,7 @@
+E:\TestADB\GroupControlModel\bin\Release\GroupControl.Model.dll
+E:\TestADB\GroupControlModel\bin\Release\GroupControl.Model.pdb
+E:\TestADB\GroupControlModel\bin\Release\DapperExtensions.dll
+E:\TestADB\GroupControlModel\bin\Release\Dapper.dll
+E:\TestADB\GroupControlModel\obj\Release\GroupControl.Model.csprojResolveAssemblyReference.cache
+E:\TestADB\GroupControlModel\obj\Release\GroupControl.Model.dll
+E:\TestADB\GroupControlModel\obj\Release\GroupControl.Model.pdb

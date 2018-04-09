@@ -1,0 +1,10 @@
+F:\TestADB\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+F:\TestADB\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+F:\TestADB\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+F:\TestADB\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+F:\TestADB\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\Users\Administrator\Desktop\TestADB\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\Users\Administrator\Desktop\TestADB\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Users\Administrator\Desktop\TestADB\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Users\Administrator\Desktop\TestADB\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Users\Administrator\Desktop\TestADB\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb

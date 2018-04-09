@@ -1,0 +1,5 @@
+C:\Users\Administrator\Desktop\TestADB\GroupControlHelper\bin\Debug\GroupControlHelper.dll
+C:\Users\Administrator\Desktop\TestADB\GroupControlHelper\bin\Debug\GroupControlHelper.pdb
+C:\Users\Administrator\Desktop\TestADB\GroupControlHelper\obj\Debug\GroupControlHelper.dll
+C:\Users\Administrator\Desktop\TestADB\GroupControlHelper\obj\Debug\GroupControlHelper.pdb
+C:\Users\Administrator\Desktop\TestADB\GroupControlHelper\obj\Debug\GroupControlHelper.csprojResolveAssemblyReference.cache

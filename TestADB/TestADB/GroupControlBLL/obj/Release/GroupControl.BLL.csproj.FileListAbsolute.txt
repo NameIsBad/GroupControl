@@ -1,0 +1,17 @@
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.BLL.dll
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.BLL.pdb
+E:\TestADB\GroupControlBLL\bin\Release\Dapper.dll
+E:\TestADB\GroupControlBLL\bin\Release\DapperExtensions.dll
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.Common.dll
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.DAL.dll
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.IBLL.dll
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.IDAL.dll
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.Model.dll
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.IBLL.pdb
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.Common.pdb
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.DAL.pdb
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.IDAL.pdb
+E:\TestADB\GroupControlBLL\bin\Release\GroupControl.Model.pdb
+E:\TestADB\GroupControlBLL\obj\Release\GroupControl.BLL.csprojResolveAssemblyReference.cache
+E:\TestADB\GroupControlBLL\obj\Release\GroupControl.BLL.dll
+E:\TestADB\GroupControlBLL\obj\Release\GroupControl.BLL.pdb

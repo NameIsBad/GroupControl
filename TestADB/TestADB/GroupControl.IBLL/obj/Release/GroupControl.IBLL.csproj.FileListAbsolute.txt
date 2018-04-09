@@ -1,0 +1,9 @@
+E:\TestADB\GroupControl.IBLL\bin\Release\GroupControl.IBLL.dll
+E:\TestADB\GroupControl.IBLL\bin\Release\GroupControl.IBLL.pdb
+E:\TestADB\GroupControl.IBLL\bin\Release\GroupControl.Model.dll
+E:\TestADB\GroupControl.IBLL\bin\Release\DapperExtensions.dll
+E:\TestADB\GroupControl.IBLL\bin\Release\Dapper.dll
+E:\TestADB\GroupControl.IBLL\bin\Release\GroupControl.Model.pdb
+E:\TestADB\GroupControl.IBLL\obj\Release\GroupControl.IBLL.csprojResolveAssemblyReference.cache
+E:\TestADB\GroupControl.IBLL\obj\Release\GroupControl.IBLL.dll
+E:\TestADB\GroupControl.IBLL\obj\Release\GroupControl.IBLL.pdb

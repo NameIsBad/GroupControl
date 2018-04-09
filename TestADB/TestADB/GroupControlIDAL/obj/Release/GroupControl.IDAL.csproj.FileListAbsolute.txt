@@ -1,0 +1,9 @@
+E:\TestADB\GroupControlIDAL\bin\Release\GroupControl.IDAL.dll
+E:\TestADB\GroupControlIDAL\bin\Release\GroupControl.IDAL.pdb
+E:\TestADB\GroupControlIDAL\bin\Release\GroupControl.Model.dll
+E:\TestADB\GroupControlIDAL\bin\Release\DapperExtensions.dll
+E:\TestADB\GroupControlIDAL\bin\Release\Dapper.dll
+E:\TestADB\GroupControlIDAL\bin\Release\GroupControl.Model.pdb
+E:\TestADB\GroupControlIDAL\obj\Release\GroupControl.IDAL.csprojResolveAssemblyReference.cache
+E:\TestADB\GroupControlIDAL\obj\Release\GroupControl.IDAL.dll
+E:\TestADB\GroupControlIDAL\obj\Release\GroupControl.IDAL.pdb

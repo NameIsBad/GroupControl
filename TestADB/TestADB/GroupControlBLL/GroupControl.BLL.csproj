@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6F860840-AE42-46EB-89EC-D49509D0F8C5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GroupControl.BLL</RootNamespace>
+    <AssemblyName>GroupControl.BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\bins\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DapperExtensions">
+      <HintPath>..\bins\DapperExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddFriendInfoRecordBLL.cs" />
+    <Compile Include="AreaInfoBLL.cs" />
+    <Compile Include="AreaToPhoneNumberBLL.cs" />
+    <Compile Include="AutoServiceInfoBLL.cs" />
+    <Compile Include="BaseBLL.cs" />
+    <Compile Include="ComputerInfoBLL.cs" />
+    <Compile Include="ContractsInfoBLL.cs" />
+    <Compile Include="DeviceToNickNameBLL.cs" />
+    <Compile Include="GroupInfoBLL.cs" />
+    <Compile Include="NewFriendStateBLL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GroupControl.IBLL\GroupControl.IBLL.csproj">
+      <Project>{54cbb48f-6c58-4003-848b-0e25e21b2918}</Project>
+      <Name>GroupControl.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GroupControlCommon\GroupControl.Common.csproj">
+      <Project>{86721220-0da0-41f3-bf6b-2598368de341}</Project>
+      <Name>GroupControl.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GroupControlDAL\GroupControl.DAL.csproj">
+      <Project>{65c7405e-fa48-485f-acbb-7d7eb04e0cb9}</Project>
+      <Name>GroupControl.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GroupControlIDAL\GroupControl.IDAL.csproj">
+      <Project>{1dc1bd0f-cfd0-43d2-a3ef-beda42617e83}</Project>
+      <Name>GroupControl.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GroupControlModel\GroupControl.Model.csproj">
+      <Project>{a55028ac-37ff-4659-ab38-a0dc110680ff}</Project>
+      <Name>GroupControl.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,13 @@
+E:\TestADB\GroupControlDAL\bin\Release\GroupControl.DAL.dll
+E:\TestADB\GroupControlDAL\bin\Release\GroupControl.DAL.pdb
+E:\TestADB\GroupControlDAL\bin\Release\Dapper.dll
+E:\TestADB\GroupControlDAL\bin\Release\DapperExtensions.dll
+E:\TestADB\GroupControlDAL\bin\Release\GroupControl.Common.dll
+E:\TestADB\GroupControlDAL\bin\Release\GroupControl.IDAL.dll
+E:\TestADB\GroupControlDAL\bin\Release\GroupControl.Model.dll
+E:\TestADB\GroupControlDAL\bin\Release\GroupControl.Common.pdb
+E:\TestADB\GroupControlDAL\bin\Release\GroupControl.IDAL.pdb
+E:\TestADB\GroupControlDAL\bin\Release\GroupControl.Model.pdb
+E:\TestADB\GroupControlDAL\obj\Release\GroupControl.DAL.csprojResolveAssemblyReference.cache
+E:\TestADB\GroupControlDAL\obj\Release\GroupControl.DAL.dll
+E:\TestADB\GroupControlDAL\obj\Release\GroupControl.DAL.pdb

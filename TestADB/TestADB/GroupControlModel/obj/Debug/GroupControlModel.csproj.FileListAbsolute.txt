@@ -1,0 +1,6 @@
+C:\Users\Administrator\Desktop\TestADB\GroupControlModel\bin\Debug\GroupControlModel.dll
+C:\Users\Administrator\Desktop\TestADB\GroupControlModel\bin\Debug\GroupControlModel.pdb
+C:\Users\Administrator\Desktop\TestADB\GroupControlModel\obj\Debug\GroupControlModel.dll
+C:\Users\Administrator\Desktop\TestADB\GroupControlModel\obj\Debug\GroupControlModel.pdb
+C:\Users\Administrator\Desktop\TestADB\GroupControlModel\bin\Debug\DapperExtensions.dll
+C:\Users\Administrator\Desktop\TestADB\GroupControlModel\bin\Debug\Dapper.dll
