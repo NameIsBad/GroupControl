@@ -111,3 +111,15 @@ E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlDAL\bin\D
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlDAL\obj\Debug\GroupControl.DAL.csprojResolveAssemblyReference.cache
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlDAL\obj\Debug\GroupControl.DAL.dll
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlDAL\obj\Debug\GroupControl.DAL.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\bin\Debug\GroupControl.DAL.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\bin\Debug\GroupControl.DAL.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\bin\Debug\GroupControl.Common.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\bin\Debug\GroupControl.IDAL.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\bin\Debug\GroupControl.Model.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\bin\Debug\GroupControl.Common.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\bin\Debug\GroupControl.IDAL.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\bin\Debug\GroupControl.Model.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\obj\Debug\GroupControl.DAL.csprojResolveAssemblyReference.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\obj\Debug\GroupControl.DAL.csproj.CoreCompileInputs.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\obj\Debug\GroupControl.DAL.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlDAL\obj\Debug\GroupControl.DAL.pdb

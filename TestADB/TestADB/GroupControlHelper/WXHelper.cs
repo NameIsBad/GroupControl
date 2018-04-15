@@ -1436,9 +1436,8 @@ namespace GroupControl.Helper
         private void OpenWX(string device, WMPoint wmPointModel = null)
         {
 
-            _baseAction.OpenApp(device, "com.tencent.mm", "com.tencent.mm/com.tencent.mm.ui.LauncherUI", () =>
+            _baseAction.OpenApp(device, "com.tencent.mm", "com.tencent.mm/com.tencent.mm.ui.LauncherUI", (action) =>
             {
-
                 var stateStr = string.Empty;
 
                 if (wmPointModel == null)
@@ -1453,16 +1452,8 @@ namespace GroupControl.Helper
 
                     _baseAction.actionDirectStr(device, 700, 100, wmPointModel);
 
-                    var list = _baseAction.InitProcessWithTaskState(device, " shell dumpsys window | grep mCurrentFocus", true);
+                    action(stateStr);
 
-                    if (null == list || list.Count == 0)
-                    {
-                        return;
-                    }
-
-                    stateStr = string.Join("|", list);
-
-                    Thread.Sleep(200);
                 }
 
                 _baseAction.actionDirectStr(device, 700, 100, wmPointModel);

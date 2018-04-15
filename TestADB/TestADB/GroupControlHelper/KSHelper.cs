@@ -20,24 +20,14 @@ namespace GroupControl.Helper
         public void OpenKS(string device)
         {
 
-           _baseAction.OpenApp(device, "com.smile.gifmaker", "com.smile.gifmaker/com.yxcorp.gifshow.HomeActivity", () =>
+           _baseAction.OpenApp(device, "com.smile.gifmaker", "com.smile.gifmaker/com.yxcorp.gifshow.HomeActivity", (action) =>
             {
 
                 var stateStr = string.Empty;
 
                 while (!stateStr.Contains("HomeActivity"))
                 {
-
-                    var list = _baseAction.InitProcessWithTaskState(device, " shell dumpsys window | grep mCurrentFocus", true);
-
-                    if (null == list || list.Count == 0)
-                    {
-                        return;
-                    }
-
-                    stateStr = string.Join("|", list);
-
-                    Thread.Sleep(200);
+                    action(stateStr);
                 }
 
             });

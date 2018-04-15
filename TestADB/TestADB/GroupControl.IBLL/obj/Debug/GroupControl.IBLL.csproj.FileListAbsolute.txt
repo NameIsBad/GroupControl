@@ -91,3 +91,13 @@ E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControl.IBLL\bin
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControl.IBLL\obj\Debug\GroupControl.IBLL.csprojResolveAssemblyReference.cache
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControl.IBLL\obj\Debug\GroupControl.IBLL.dll
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControl.IBLL\obj\Debug\GroupControl.IBLL.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\bin\Debug\GroupControl.IBLL.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\bin\Debug\GroupControl.IBLL.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\bin\Debug\GroupControl.Model.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\bin\Debug\DapperExtensions.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\bin\Debug\Dapper.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\bin\Debug\GroupControl.Model.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\obj\Debug\GroupControl.IBLL.csprojResolveAssemblyReference.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\obj\Debug\GroupControl.IBLL.csproj.CoreCompileInputs.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\obj\Debug\GroupControl.IBLL.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControl.IBLL\obj\Debug\GroupControl.IBLL.pdb

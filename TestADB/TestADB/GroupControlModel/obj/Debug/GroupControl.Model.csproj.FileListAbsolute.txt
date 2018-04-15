@@ -66,3 +66,11 @@ E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlModel\obj
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlModel\obj\Debug\GroupControl.Model.pdb
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlModel\obj\Debug\GroupControl.Model.csprojResolveAssemblyReference.cache
 E:\github\GroupControl\TestADB\TestADB\GroupControlModel\obj\Debug\GroupControl.Model.csprojResolveAssemblyReference.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControlModel\bin\Debug\GroupControl.Model.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlModel\bin\Debug\GroupControl.Model.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlModel\bin\Debug\DapperExtensions.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlModel\bin\Debug\Dapper.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlModel\obj\Debug\GroupControl.Model.csprojResolveAssemblyReference.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControlModel\obj\Debug\GroupControl.Model.csproj.CoreCompileInputs.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControlModel\obj\Debug\GroupControl.Model.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlModel\obj\Debug\GroupControl.Model.pdb

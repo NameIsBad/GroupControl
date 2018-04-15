@@ -295,7 +295,7 @@ namespace GroupControl.Helper
         /// 打开App
         /// </summary>
         /// <param name="device"></param>
-        public void OpenApp(string device, string packageName, string directUIPageName, Action whileAction)
+        public void OpenApp(string device, string packageName, string directUIPageName, Action<Action<string>> whileAction)
         {
             ///回到主界面
             InitProcessWithTaskState(device, " shell input keyevent 3");
@@ -306,7 +306,20 @@ namespace GroupControl.Helper
             //开启app
             InitProcessWithTaskState(device, string.Format("shell am start {0}", directUIPageName), true);
 
-            whileAction();
+            whileAction((stateStr)=> {
+
+                var list =InitProcessWithTaskState(device, " shell dumpsys window | grep mCurrentFocus", true);
+
+                if (null == list || list.Count == 0)
+                {
+                    return;
+                }
+
+                stateStr = string.Join("|", list);
+
+                Thread.Sleep(200);
+
+            });
         }
 
         /// <summary>

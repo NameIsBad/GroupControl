@@ -91,3 +91,13 @@ E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlCommon\bi
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlCommon\obj\Debug\GroupControl.Common.csprojResolveAssemblyReference.cache
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlCommon\obj\Debug\GroupControl.Common.dll
 E:\GroupControl-master\GroupControl-master\TestADB\TestADB\GroupControlCommon\obj\Debug\GroupControl.Common.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\bin\Debug\GroupControl.Common.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\bin\Debug\GroupControl.Common.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\bin\Debug\Dapper.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\bin\Debug\DapperExtensions.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\bin\Debug\GroupControl.Model.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\bin\Debug\GroupControl.Model.pdb
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\obj\Debug\GroupControl.Common.csprojResolveAssemblyReference.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\obj\Debug\GroupControl.Common.csproj.CoreCompileInputs.cache
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\obj\Debug\GroupControl.Common.dll
+F:\github\GroupControl\TestADB\TestADB\GroupControlCommon\obj\Debug\GroupControl.Common.pdb
