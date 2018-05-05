@@ -28,21 +28,36 @@ namespace CrawPhoneNumberSection
         static void Main(string[] args)
         {
             try
-            {   
-                Task.Factory.StartNew(() =>
+            {
+
+                var str = "123";
+
+                Console.WriteLine(str.GetType().ToString());
+
+                if (str.GetType().Equals(typeof(string)))
                 {
-                    var returnUrlList =GetNumberType(string.Format("{0}hd/", url)).Result;
-                    returnUrlList.ToList().ForEach( o =>
-                    {
+                    Console.WriteLine("this is type string");
+                }
 
-                        Console.WriteLine(o);
-                       // Thread.Sleep(1000);
-                        var numberSectionList =GetNumberSection(string.Format("{0}{1}", url, o)).Result;
+                var data = 23.00;
 
-                        Console.WriteLine(JsonConvert.SerializeObject(numberSectionList));
+                Console.WriteLine(data.GetType().ToString());
 
-                    });
-                });
+
+                //Task.Factory.StartNew(() =>
+                //{
+                //    var returnUrlList =GetNumberType(string.Format("{0}hd/", url)).Result;
+                //    returnUrlList.ToList().ForEach( o =>
+                //    {
+
+                //        Console.WriteLine(o);
+                //       // Thread.Sleep(1000);
+                //        var numberSectionList =GetNumberSection(string.Format("{0}{1}", url, o)).Result;
+
+                //        Console.WriteLine(JsonConvert.SerializeObject(numberSectionList));
+
+                //    });
+                //});
 
                 Console.Read();
 

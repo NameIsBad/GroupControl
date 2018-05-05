@@ -22,7 +22,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -151,6 +151,12 @@
     <Compile Include="SendGroupMessageForm.Designer.cs">
       <DependentUpon>SendGroupMessageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SendIdleFishPost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SendIdleFishPost.Designer.cs">
+      <DependentUpon>SendIdleFishPost.cs</DependentUpon>
+    </Compile>
     <Compile Include="SetDeviceToGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -253,6 +259,9 @@
     <EmbeddedResource Include="SendGroupMessageForm.resx">
       <DependentUpon>SendGroupMessageForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SendIdleFishPost.resx">
+      <DependentUpon>SendIdleFishPost.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SetDeviceToGroupForm.resx">
       <DependentUpon>SetDeviceToGroupForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -349,6 +358,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\samescreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\idle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\weixin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\index.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\back.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

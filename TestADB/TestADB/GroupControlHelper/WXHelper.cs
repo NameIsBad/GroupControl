@@ -316,40 +316,8 @@ namespace GroupControl.Helper
                 }
             }
 
-            if (null != viewModel.Files && viewModel.Files.Count() > 0)
-            {
-                WMPoint wmPointModel = _baseAction.ConvertPointWithDiffentWM(viewModel.Device, 120, 200, wmPoint);
-
-                var index = 1;
-
-                viewModel.Files.ToList().ForEach((file) =>
-                {
-
-                    if (file.Extension.Equals(".txt"))
-                    {
-                        return;
-                    }
-
-                    var direction = _baseAction.func(wmPointModel, "shell input tap");
-
-                    ///图片中选择
-                    _baseAction.InitProcessWithTaskState(viewModel.Device, direction);
-
-                    if (index % 4 == 0)
-                    {
-                        wmPointModel.WM_X = 120;
-
-                        wmPointModel.WM_Y += 180;
-                    }
-                    else
-                    {
-                        wmPointModel.WM_X += 180;
-                    }
-
-                    index++;
-
-                });
-            }
+            ///选择照片
+            _baseAction.SelectImage(viewModel.Files,wmPoint,viewModel.Device,120,200,120,180);
 
             ///发送的是视频
             if (viewModel.PublishContentType == EnumPublishContentType.VedioAndWord)
@@ -433,7 +401,7 @@ namespace GroupControl.Helper
 
             return _baseAction.CommonAction<UploadFilesToPhoneViewModel>(viewModel.Devices, (item) =>
              {
-                 var currentViewModel = UploadToPhine(
+                 var currentViewModel = _baseAction.UploadToPhine(
 
                      new UploadFilesToPhoneViewModel()
                      {
@@ -1001,8 +969,6 @@ namespace GroupControl.Helper
             });
         }
 
-
-
         //进入新朋友页面
         public void EnterNewFriendPageAction(WXActionViewModel viewModel, WMPoint wmPoint = null)
         {
@@ -1029,8 +995,6 @@ namespace GroupControl.Helper
                 return;
             }
         }
-
-
 
         /// <summary>
         /// 点击添加到通讯录的时候  直接变成发送消息  而不是到验证页面
@@ -1161,7 +1125,7 @@ namespace GroupControl.Helper
 
                 var strValue = clickBtn.Attributes["bounds"].Value;
 
-                viewModel = GetStartBoundsWithEndBounds<WXActionViewModel>(viewModel, strValue, (o) =>
+                viewModel = _baseAction.GetStartBoundsWithEndBounds<WXActionViewModel>(viewModel, strValue, (o) =>
                 {
 
                     return o;
@@ -1216,7 +1180,7 @@ namespace GroupControl.Helper
                 bounds = nodeList[1].ChildNodes[0].Attributes["bounds"].Value;
             }
 
-            viewModel = GetStartBoundsWithEndBounds<WXActionViewModel>(viewModel, bounds, (o) =>
+            viewModel = _baseAction.GetStartBoundsWithEndBounds<WXActionViewModel>(viewModel, bounds, (o) =>
             {
 
                 return o;
@@ -1452,7 +1416,7 @@ namespace GroupControl.Helper
 
                     _baseAction.actionDirectStr(device, 700, 100, wmPointModel);
 
-                    action(stateStr);
+                    stateStr=action(stateStr);
 
                 }
 
@@ -1583,102 +1547,6 @@ namespace GroupControl.Helper
 
         #endregion
 
-        /// <summary>
-        /// 本地文件上传到手机
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public UploadFilesToPhoneViewModel UploadToPhine(UploadFilesToPhoneViewModel viewModel)
-        {
-            var folder = new DirectoryInfo(viewModel.Path);
-
-            var files = folder.GetFiles();
-
-            viewModel.Files = files;
-
-            var fullPath = Path.Combine(viewModel.Path, "content.txt");
-
-            if (File.Exists(fullPath))
-            {
-                using (var fileStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                {
-                    using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
-                    {
-                        viewModel.Content = streamReader.ReadToEnd();
-
-                        streamReader.Close();
-                    }
-
-                    fileStream.Close();
-
-                }
-            }
-
-            if ((null == files || files.ToList().Count == 0) && string.IsNullOrEmpty(viewModel.Content))
-            {
-                return default(UploadFilesToPhoneViewModel);
-            }
-
-            //删除文件夹
-            _baseAction.InitProcessWithTaskState(viewModel.Device, "shell rm -r /sdcard/ZQKj/", true);
-
-            ///创建文件夹
-            _baseAction.InitProcessWithTaskState(viewModel.Device, "shell mkdir /sdcard/ZQKj", true);
-
-            if (null != files && files.Count() > 0)
-            {
-
-                files.OrderByDescending(o => o.Name).ToList().ForEach((o) =>
-                {
-                    var direction = string.Format("push {0} /sdcard/ZQKj", o.FullName);
-
-                    if (!o.Extension.Equals(".txt"))
-                    {
-                        var returnData = _baseAction.InitProcessWithTaskState(viewModel.Device, direction, true);
-
-                        ///刷新单图  要不然 微信 图片选择器中的图片 不显示
-                        _baseAction.InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d  file:///storage/emulated/0/ZQKj/" + o.Name, true);
-
-                    }
-
-                });
-
-
-                ////批量刷新  要不然 微信 图片选择器中的图片 不显示
-                //_baseAction.InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d  file:///storage/emulated/0/ZQKj/", true);
-            }
-
-            return viewModel;
-        }
-
-        /// <summary>
-        /// 解析手机当前控件的起始坐标 终止坐标
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <param name="strValue"></param>
-        /// <param name="func"></param>
-        /// <returns></returns>
-        public T GetStartBoundsWithEndBounds<T>(WXActionViewModel viewModel, string strValue, Func<WXActionViewModel, T> func = null) where T : class
-        {
-
-            if (!string.IsNullOrEmpty(strValue))
-            {
-                var list = strValue.Replace("[", "").Replace(",", "|").Replace("]", "|").Split('|').ToList().Where(q => !string.IsNullOrEmpty(q)).ToList();
-
-                viewModel.LeftWidth = int.Parse(list.FirstOrDefault());
-
-                viewModel.RightWidth = int.Parse(list.Skip(2).Take(1).FirstOrDefault());
-
-                viewModel.TopHeight = int.Parse(list.Skip(1).Take(1).FirstOrDefault());
-
-                viewModel.BottomHeight = int.Parse(list.LastOrDefault());
-
-                return func(viewModel);
-
-            }
-
-            return viewModel as T;
-        }
 
         public WXActionViewModel ValidateSexWithColorPoint(string device, string bounds)
         {
@@ -1689,7 +1557,7 @@ namespace GroupControl.Helper
 
             var returnData = _baseAction.InitProcessWithTaskState(device, string.Format("pull /sdcard/validateSex.jpg {0}", currentValidateSexImagePath), true);
 
-            return GetStartBoundsWithEndBounds<WXActionViewModel>(new WXActionViewModel(), bounds, (o) =>
+            return _baseAction.GetStartBoundsWithEndBounds<WXActionViewModel>(new WXActionViewModel(), bounds, (o) =>
             {
 
                 Bitmap bmp = new Bitmap(string.Format(@"{0}\validateSex.jpg", currentValidateSexImagePath));

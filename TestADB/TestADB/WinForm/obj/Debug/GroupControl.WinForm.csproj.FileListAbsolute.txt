@@ -98,3 +98,6 @@ F:\github\GroupControl\TestADB\TestADB\WinForm\obj\Debug\GroupControl.WinForm.ex
 F:\github\GroupControl\TestADB\TestADB\WinForm\obj\Debug\GroupControl.WinForm.application
 F:\github\GroupControl\TestADB\TestADB\WinForm\obj\Debug\GroupControl.WinForm.exe
 F:\github\GroupControl\TestADB\TestADB\WinForm\obj\Debug\GroupControl.WinForm.pdb
+F:\github\GroupControl\TestADB\TestADB\WinForm\obj\Debug\GroupControl.WinForm.SendIdleFishPost.resources
+E:\github\GroupControl\TestADB\TestADB\WinForm\obj\Debug\GroupControl.WinForm.SendIdleFishPost.resources
+E:\github\GroupControl\TestADB\TestADB\WinForm\obj\Debug\GroupControl.WinForm.csproj.CopyComplete

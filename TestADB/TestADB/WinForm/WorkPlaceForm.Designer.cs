@@ -49,6 +49,8 @@
             this.回收数据 = new System.Windows.Forms.ToolStripMenuItem();
             this.导入历史记录 = new System.Windows.Forms.ToolStripMenuItem();
             this.闲鱼ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.手动发贴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.定时发贴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.快手ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关注点赞评论ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.取消任务ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -234,9 +236,26 @@
             // 
             // 闲鱼ToolStripMenuItem
             // 
+            this.闲鱼ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.手动发贴ToolStripMenuItem,
+            this.定时发贴ToolStripMenuItem});
             this.闲鱼ToolStripMenuItem.Name = "闲鱼ToolStripMenuItem";
             this.闲鱼ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.闲鱼ToolStripMenuItem.Text = "闲鱼";
+            // 
+            // 手动发贴ToolStripMenuItem
+            // 
+            this.手动发贴ToolStripMenuItem.Name = "手动发贴ToolStripMenuItem";
+            this.手动发贴ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.手动发贴ToolStripMenuItem.Text = "手动发贴";
+            this.手动发贴ToolStripMenuItem.Click += new System.EventHandler(this.手动发贴ToolStripMenuItem_Click);
+            // 
+            // 定时发贴ToolStripMenuItem
+            // 
+            this.定时发贴ToolStripMenuItem.Name = "定时发贴ToolStripMenuItem";
+            this.定时发贴ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.定时发贴ToolStripMenuItem.Text = "定时发贴";
+            this.定时发贴ToolStripMenuItem.Click += new System.EventHandler(this.定时发贴ToolStripMenuItem_Click);
             // 
             // 快手ToolStripMenuItem
             // 
@@ -249,8 +268,9 @@
             // 关注点赞评论ToolStripMenuItem
             // 
             this.关注点赞评论ToolStripMenuItem.Name = "关注点赞评论ToolStripMenuItem";
-            this.关注点赞评论ToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.关注点赞评论ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.关注点赞评论ToolStripMenuItem.Text = "关注 点赞 评论";
+            this.关注点赞评论ToolStripMenuItem.Click += new System.EventHandler(this.关注点赞评论ToolStripMenuItem_Click);
             // 
             // 取消任务ToolStripMenuItem
             // 
@@ -414,6 +434,8 @@
         private System.Windows.Forms.ToolStripMenuItem 关注点赞评论ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 按编号搜索;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.ToolStripMenuItem 手动发贴ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 定时发贴ToolStripMenuItem;
     }
 }
 

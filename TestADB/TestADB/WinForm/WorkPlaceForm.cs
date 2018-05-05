@@ -202,6 +202,35 @@ namespace GroupControl.WinForm
             ShowForm(form);
         }
 
+        /// <summary>
+        /// 闲鱼手动发贴
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 手动发贴ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SendIdleFishPost form = new SendIdleFishPost();
+
+            form.Text = "闲鱼手动发贴";
+
+            ShowForm(form);
+        }
+
+
+        /// <summary>
+        /// 闲鱼自动发贴
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 定时发贴ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SendIdleFishPost form = new SendIdleFishPost();
+
+            form.Text = "闲鱼自动发贴";
+
+            ShowForm(form);
+        }
+
         private void 手动发群消息ToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -238,6 +267,138 @@ namespace GroupControl.WinForm
             ShowForm(form);
         }
 
+        private void 解屏ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            baseAction.UnlockScreen(false);
+        }
+
+        private void 锁屏ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            baseAction.UnlockScreen(true);
+        }
+
+        private void 批量重启ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BatchTask("reboot");
+        }
+
+        private void 批量关机ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BatchTask(" shell reboot -p ");
+        }
+
+        private void 批量安装软件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var btn = (ToolStripMenuItem)sender;
+
+            InstallApp _installApp = new InstallApp();
+
+            _installApp.Tag = (EnumInstallAppType)Convert.ToInt32(btn.Tag);
+
+            _installApp.Text = "安装装机软件";
+
+            _installApp._afreshSameScreenControl += (device) =>
+            {
+
+                var currentControlList = baseAction.Dic.Value[device];
+
+                baseAction.SingleShowImageWithSocket(currentControlList);
+
+            };
+
+            ShowForm(_installApp);
+        }
+
+        private void 更改输入法ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var btn = (ToolStripMenuItem)sender;
+
+            InstallApp _installApp = new InstallApp();
+
+            _installApp.Tag = (EnumInstallAppType)Convert.ToInt32(btn.Tag);
+
+            _installApp.Text = "安装装机软件";
+
+            _installApp._afreshSameScreenControl += (device) =>
+            {
+
+                var currentControlList = baseAction.Dic.Value[device];
+
+                baseAction.SingleShowImageWithSocket(currentControlList);
+
+            };
+
+            ShowForm(_installApp);
+        }
+
+        private void 按编号搜索ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SearchWithNumberForm form = new SearchWithNumberForm();
+
+            form.Text = "按编号搜索设备";
+
+            form._identificationEquipmentWithNumber += (data) =>
+            {
+
+                try
+                {
+                    var currentPanle = GetPictureByName(this.flowLayoutPanel3, data, (number, control) =>
+                    {
+                        if (control.Tag.Equals(data))
+                        {
+                            return true;
+                        }
+
+                        return false;
+                    });
+
+                    if (null != currentPanle && currentPanle.Controls.Count > 0)
+                    {
+                        // currentPanle.Controls[0].BackColor = Color.Red;
+
+                        form.Close();
+
+                        form.FormClosed += (o, q) =>
+                        {
+                            SameScreenForm samScreen = new SameScreenForm();
+
+                            samScreen.Name = currentPanle.Name.Split('_')[0];
+
+                            samScreen.Tag = (currentPanle.Controls[1] as PictureBox).Image;
+
+                            samScreen.MaximizeBox = false; /// 设置最大化按钮是否有效 
+
+                            samScreen.MinimizeBox = false; /// 设置最小化按钮是否有效 
+
+                            samScreen.ShowDialog();
+                        };
+
+                    }
+                    else
+                    {
+                        form.Text = "设备编号不存在！";
+                    }
+                }
+                catch (Exception)
+                {
+
+                    // throw;
+                }
+
+            };
+
+            ShowForm(form);
+        }
+
+        private void 关注点赞评论ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            KSActionForm form = new KSActionForm();
+
+            form.Text = (sender as ToolStripMenuItem).Text;
+
+            ShowForm(form);
+        }
+
         #region 内部方法
 
         private Control CreateEquipmentMapToPC(DeviceToNickNameViewModel model, MouseEventHandler handler)
@@ -251,10 +412,10 @@ namespace GroupControl.WinForm
             _panel.RoundeStyle = RoundStyle.All;
             _panel.Radius = 30;
             _panel.Tag = model.NickName;
-            _panel.BorderColor = Color.Black;      
+            _panel.BorderColor = Color.Black;
             _panel.Name = string.Format(partialControlName, model.Device);
 
-            var _btn = CreateActionBtn(_panel, model.NickName, _panel.Width-_marginH*2);
+            var _btn = CreateActionBtn(_panel, model.NickName, _panel.Width - _marginH * 2);
             _btn.Name = model.Device;
             _btn.Location = new Point(_marginH, _marginV);
             _btn.Click += (o, s) =>
@@ -298,13 +459,13 @@ namespace GroupControl.WinForm
             _picBox.SizeMode = PictureBoxSizeMode.StretchImage;
             _picBox.MouseDoubleClick += handler;
             _picBox.BackColor = Color.Black;
-            _picBox.Width = _panel.Width- _marginH*2;
-            _picBox.Height = _panel.Height -95;
-            _picBox.Location = new Point(_marginH, _btn.Height +_btn.Location.Y);
+            _picBox.Width = _panel.Width - _marginH * 2;
+            _picBox.Height = _panel.Height - 95;
+            _picBox.Location = new Point(_marginH, _btn.Height + _btn.Location.Y);
 
             FlowLayoutPanel fp = new FlowLayoutPanel();
             fp.Height = 30;
-            fp.Width = _panel.Width-_marginH*2;
+            fp.Width = _panel.Width - _marginH * 2;
             fp.Location = new Point(_marginH, _picBox.Height + _picBox.Location.Y);
             fp.Parent = _panel;
             SingleEquipmentAction(fp);
@@ -343,12 +504,12 @@ namespace GroupControl.WinForm
 
             var device = parentControl.Name.Split('_')[0];
 
-            var currentWidth = (parentControl.Width-_marginH*2) * 11 / 50;
+            var currentWidth = (parentControl.Width - _marginH * 2) * 11 / 50;
 
             var rebootBtn = CreateActionBtn(fp, "", currentWidth);
             rebootBtn.Image = Properties.Resources.reboot;
             rebootBtn.ImageAlign = ContentAlignment.MiddleCenter;
-           // rebootBtn.TextAlign = ContentAlignment.MiddleRight;
+            // rebootBtn.TextAlign = ContentAlignment.MiddleRight;
             rebootBtn.MouseClick += (e, obj) =>
             {
                 Task.Factory.StartNew((data) =>
@@ -377,7 +538,7 @@ namespace GroupControl.WinForm
 
             var shadowBtn = CreateActionBtn(fp, "", currentWidth);
             shadowBtn.Image = Properties.Resources.shadow;
-            shadowBtn.ImageAlign =ContentAlignment.MiddleCenter;
+            shadowBtn.ImageAlign = ContentAlignment.MiddleCenter;
             //shadowBtn.TextAlign = ContentAlignment.MiddleRight;
             shadowBtn.MouseClick += (e, obj) =>
             {
@@ -803,127 +964,6 @@ namespace GroupControl.WinForm
 
         #endregion
 
-        private void 解屏ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            baseAction.UnlockScreen(false);
-        }
 
-        private void 锁屏ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            baseAction.UnlockScreen(true);
-        }
-
-        private void 批量重启ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            BatchTask("reboot");
-        }
-
-        private void 批量关机ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            BatchTask(" shell reboot -p ");
-        }
-
-        private void 批量安装软件ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var btn = (ToolStripMenuItem)sender;
-
-            InstallApp _installApp = new InstallApp();
-
-            _installApp.Tag = (EnumInstallAppType)Convert.ToInt32(btn.Tag);
-
-            _installApp.Text = "安装装机软件";
-
-            _installApp._afreshSameScreenControl += (device) =>
-            {
-
-                var currentControlList = baseAction.Dic.Value[device];
-
-                baseAction.SingleShowImageWithSocket(currentControlList);
-
-            };
-
-            ShowForm(_installApp);
-        }
-
-        private void 更改输入法ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var btn = (ToolStripMenuItem)sender;
-
-            InstallApp _installApp = new InstallApp();
-
-            _installApp.Tag = (EnumInstallAppType)Convert.ToInt32(btn.Tag);
-
-            _installApp.Text = "安装装机软件";
-
-            _installApp._afreshSameScreenControl += (device) =>
-            {
-
-                var currentControlList = baseAction.Dic.Value[device];
-
-                baseAction.SingleShowImageWithSocket(currentControlList);
-
-            };
-
-            ShowForm(_installApp);
-        }
-
-        private void 按编号搜索ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SearchWithNumberForm form = new SearchWithNumberForm();
-
-            form.Text = "按编号搜索设备";
-
-            form._identificationEquipmentWithNumber += (data) =>
-            {
-
-                try
-                {
-                    var currentPanle = GetPictureByName(this.flowLayoutPanel3, data, (number, control) =>
-                    {
-                        if (control.Tag.Equals(data))
-                        {
-                            return true;
-                        }
-
-                        return false;
-                    });
-
-                    if (null != currentPanle && currentPanle.Controls.Count > 0)
-                    {
-                        // currentPanle.Controls[0].BackColor = Color.Red;
-
-                        form.Close();
-
-                        form.FormClosed += (o, q) =>
-                        {
-                            SameScreenForm samScreen = new SameScreenForm();
-
-                            samScreen.Name = currentPanle.Name.Split('_')[0];
-
-                            samScreen.Tag = (currentPanle.Controls[1] as PictureBox).Image;
-
-                            samScreen.MaximizeBox = false; /// 设置最大化按钮是否有效 
-
-                            samScreen.MinimizeBox = false; /// 设置最小化按钮是否有效 
-
-                            samScreen.ShowDialog();
-                        };
-
-                    }
-                    else
-                    {
-                        form.Text = "设备编号不存在！";
-                    }
-                }
-                catch (Exception)
-                {
-
-                    // throw;
-                }
-
-            };
-
-            ShowForm(form);
-        }
     }
 }

@@ -76,6 +76,7 @@
     <Compile Include="ViewModel\DeviceToNickNameViewModel.cs" />
     <Compile Include="ViewModel\ExcuteResultViewModel.cs" />
     <Compile Include="ViewModel\GroupInfoViewModel.cs" />
+    <Compile Include="ViewModel\IdleFishActionViewModel.cs" />
     <Compile Include="ViewModel\NewFriendStateViewModel.cs" />
     <Compile Include="ViewModel\UpdateWithTaskStateViewModel.cs" />
     <Compile Include="ViewModel\VCardViewModel.cs" />

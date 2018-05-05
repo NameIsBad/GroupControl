@@ -75,3 +75,4 @@ F:\github\GroupControl\TestADB\TestADB\CrawPhoneNumberSection\obj\Debug\CrawPhon
 F:\github\GroupControl\TestADB\TestADB\CrawPhoneNumberSection\obj\Debug\CrawPhoneNumberSection.csproj.CoreCompileInputs.cache
 F:\github\GroupControl\TestADB\TestADB\CrawPhoneNumberSection\obj\Debug\CrawPhoneNumberSection.exe
 F:\github\GroupControl\TestADB\TestADB\CrawPhoneNumberSection\obj\Debug\CrawPhoneNumberSection.pdb
+E:\github\GroupControl\TestADB\TestADB\CrawPhoneNumberSection\obj\Debug\CrawPhoneNumberSection.csproj.CopyComplete

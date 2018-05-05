@@ -647,9 +647,9 @@ namespace GroupControl.WinForm
 
             var foreColor = Color.WhiteSmoke;
 
-            var backColor = Color.Gray;
+            var backColor = Color.Black ;
 
-            var btn = new Button() { Text = text, ForeColor = foreColor, BackColor = backColor, Width = currentWidth, FlatStyle = FlatStyle.Flat, FlatAppearance = { BorderSize = 0 } };
+            var btn = new Button() { Text = text,  ForeColor = foreColor, BackColor = backColor, Width = currentWidth, FlatStyle = FlatStyle.Flat, FlatAppearance = { BorderSize = 0 } };
 
 
             ///圆角button

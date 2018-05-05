@@ -46,7 +46,14 @@ namespace GroupControl.Model
         /// <summary>
         /// 查询粉丝数
         /// </summary>
-        SendGroupMessage = 6
+        SendGroupMessage = 6,
+
+
+        [Description("闲鱼发贴")]
+        /// <summary>
+        /// 闲鱼发贴
+        /// </summary>
+        SendIdleFishPost = 7
 
     }
 }

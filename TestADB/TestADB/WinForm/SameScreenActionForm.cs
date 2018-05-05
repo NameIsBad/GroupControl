@@ -18,6 +18,7 @@ using GroupControl.Common;
 using GroupControl.Helper;
 using GroupControl.BLL;
 using GroupControl.Model;
+using static GroupControl.WinForm.CustomControl.RoundPanel;
 
 namespace GroupControl.WinForm
 {
@@ -42,21 +43,13 @@ namespace GroupControl.WinForm
 
         private Stopwatch stopwatch;
 
+        private PictureBox pictureBoxSame;
+
         public SameScreenForm()
         {
             InitializeComponent();
 
             //  this.pictureBox1.MouseClick += PictureBox1_MouseClick;
-
-            this.pictureBoxSame.MouseDown += PictureBox1_MouseDown;
-
-            this.pictureBoxSame.MouseMove += PictureBox1_MouseMove;
-
-            this.pictureBoxSame.MouseUp += PictureBox1_MouseUp;
-
-            this.ActiveControl = this.pictureBoxSame;
-
-            this.StartPosition = FormStartPosition.CenterParent;
 
             baseAction = SingleHepler<BaseAction>.Instance;
 
@@ -153,6 +146,42 @@ namespace GroupControl.WinForm
         {
             _currentDevice = this.Name as string;
 
+            CustomControl.RoundPanel _panel = new CustomControl.RoundPanel();
+            _panel.Height = this.splitContainer1.Panel1.Height - 20;
+            _panel.Width = this.splitContainer1.Panel1.Width - 10;
+            _panel.Location = new Point(10, 10);
+            _panel.RoundeStyle = RoundStyle.All;
+            _panel.Radius = 30;
+            _panel.BorderColor = Color.Black;
+
+            pictureBoxSame = new PictureBox();
+            pictureBoxSame.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBoxSame.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxSame.MouseDown += PictureBox1_MouseDown;
+            pictureBoxSame.MouseMove += PictureBox1_MouseMove;
+            pictureBoxSame.MouseUp += PictureBox1_MouseUp;
+            pictureBoxSame.Height = _panel.Height - 70;
+            pictureBoxSame.Width = _panel.Width - 20;
+            pictureBoxSame.Location = new Point(10, 30);
+
+            FlowLayoutPanel fp = new FlowLayoutPanel();
+            fp.Height = 30;
+            fp.Width = pictureBoxSame.Width;
+            fp.Location = new Point(10, pictureBoxSame.Height + pictureBoxSame.Location.Y + 5);
+            fp.Parent = _panel;
+
+            var currentWidth = (fp.Width - 20) * 13 / 84;
+
+            SetBottomBtn(fp, currentWidth, returnBottomBtnEvent());
+
+            this.splitContainer1.Panel1.Controls.Add(_panel);
+            _panel.Controls.Add(pictureBoxSame);
+            _panel.Controls.Add(fp);
+
+            this.ActiveControl = pictureBoxSame;
+
+            this.StartPosition = FormStartPosition.CenterParent;
+
             //初始化分辨率
             wmPointModel = baseAction.GetWMSize(_currentDevice);
 
@@ -162,7 +191,7 @@ namespace GroupControl.WinForm
 
             this.pictureBoxSame.BackColor = Color.Black;
 
-            this.pictureBoxSame.Image=this.Tag as Image;
+            this.pictureBoxSame.Image = this.Tag as Image;
 
             baseAction.CurrentSameScreenControl = this.pictureBoxSame;
 
@@ -191,7 +220,7 @@ namespace GroupControl.WinForm
 
             this.flowLayoutPanelWithEquipment.Controls.Add(allCheckBox);
 
-            CheckSomeEquipmentToDO(this.flowLayoutPanelWithEquipment,new  DeviceToNickNameViewModel() {Device = _currentDevice });
+            CheckSomeEquipmentToDO(this.flowLayoutPanelWithEquipment, new DeviceToNickNameViewModel() { Device = _currentDevice });
 
             InitGroup(this.panelWithSameScreenGroup);
 
@@ -220,27 +249,35 @@ namespace GroupControl.WinForm
         private void Form2_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
         {
 
-           baseAction.CurrentSameScreenControl = default(Control);
+            baseAction.CurrentSameScreenControl = default(Control);
 
             // DisposeControl();
         }
 
-
         /// <summary>
-        /// 回到主屏幕
+        /// 设置底部按钮
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button2_Click(object sender, EventArgs e)
+        /// <param name="panel"></param>
+        /// <param name="width"></param>
+        /// <param name="dic"></param>
+        private void SetBottomBtn(FlowLayoutPanel panel, int width, Dictionary<Image, EventHandler> dic)
         {
-            SameScreenOperation((device) =>
+            if (dic == null || dic.Count == 0)
             {
+                return;
+            }
 
-                baseAction.InitProcess(device, "shell input keyevent 3");
-
+            dic.Keys.ToList<Image>().ForEach(o =>
+            {
+                var action = dic[o];
+                var btn = CreateActionBtn(panel, "", width);
+                btn.Image = o;
+                btn.ImageAlign = ContentAlignment.MiddleCenter;
+                btn.Height = panel.Height;
+                btn.Click += action;
             });
-        }
 
+        }
 
         public void SameScreenOperation(Action<string> action)
         {
@@ -276,16 +313,16 @@ namespace GroupControl.WinForm
                 {
                     list = list.Where(o => !o.Equals(_currentDevice)).ToList();
 
-                    var taskList=new List<Task>();
+                    var taskList = new List<Task>();
 
                     list.ToList().ForEach((item) =>
                     {
 
-                       var task=Task.Factory.StartNew((device) =>
-                        {
-                            action(device as string);
+                        var task = Task.Factory.StartNew((device) =>
+                           {
+                               action(device as string);
 
-                        }, item, TaskCreationOptions.LongRunning);
+                           }, item, TaskCreationOptions.LongRunning);
 
                         taskList.Add(task);
 
@@ -298,21 +335,6 @@ namespace GroupControl.WinForm
 
         }
 
-        /// <summary>
-        /// 返回键
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button3_Click(object sender, EventArgs e)
-        {
-            SameScreenOperation((device) =>
-            {
-
-                baseAction.InitProcess(device, "shell input keyevent 4");
-
-            });
-        }
-
         private void buttonLeft_Click(object sender, EventArgs e)
         {
             baseAction.InitProcess(_currentDevice, string.Format("shell input swipe {0} {1} {2} {3}", 600, 600, 200, 600));
@@ -322,23 +344,6 @@ namespace GroupControl.WinForm
         {
             baseAction.InitProcess(_currentDevice, string.Format("shell input swipe {0} {1} {2} {3}", 200, 600, 700, 600));
         }
-
-
-        /// <summary>
-        /// 解屏
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void UnLock_Click(object sender, EventArgs e)
-        {
-            SameScreenOperation((device) =>
-            {
-
-                baseAction.UnlockSingleScreen(device);
-
-            });
-        }
-
 
         /// <summary>
         ///对朋友圈 进行评论
@@ -370,27 +375,62 @@ namespace GroupControl.WinForm
 
         }
 
-
-        /// <summary>
-        /// 启动微信
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
+        private Dictionary<Image, EventHandler> returnBottomBtnEvent()
         {
-            SameScreenOperation((device) =>
-            {
+            return new Dictionary<Image, EventHandler>() {
+
+                ///回到主屏幕
+                {
+                Properties.Resources.index,(o,s)=> { SameScreenOperation((device) =>{baseAction.InitProcess(device, "shell input keyevent 3");});}
+                },
+
+                ///返回键
+                {
+                Properties.Resources.back,(o,s)=> {SameScreenOperation((device) =>{baseAction.InitProcess(device, "shell input keyevent 4");});}
+                },
+
+                ///借屏键
+                {
+                Properties.Resources.light,(o,s)=> {SameScreenOperation((device) =>{baseAction.UnlockSingleScreen(device);});}
+                },
+
+                 ///启动微信
+                {
+                Properties.Resources.weixin,(o,s)=> {SameScreenOperation((device) =>{
 
                 baseAction.InitProcess(device, " shell am force-stop com.tencent.mm");
 
                 baseAction.InitProcess(device, " shell am start com.tencent.mm/com.tencent.mm.ui.LauncherUI", true);
 
-            });
-        }
+                });}
 
-        private void pictureBoxSame_Click(object sender, EventArgs e)
-        {
+                },
 
+                ///启动闲鱼
+                {
+                Properties.Resources.idle,(o,s)=> {SameScreenOperation((device) =>{
+
+                baseAction.InitProcess(device, " shell am force-stop com.taobao.idlefish");
+
+                baseAction.InitProcess(device, " shell am start com.taobao.idlefish/com.taobao.fleamarket.home.activity.MainActivity", true);
+
+                });}
+
+                },
+             
+                ///启动快手
+                {
+                Properties.Resources.ks,(o,s)=> {SameScreenOperation((device) =>{
+
+                baseAction.InitProcess(device, " shell am force-stop com.smile.gifmaker");
+
+                baseAction.InitProcess(device, " shell am start com.smile.gifmaker/com.yxcorp.gifshow.HomeActivity", true);
+
+                });}
+
+                },
+
+        };
         }
     }
 }

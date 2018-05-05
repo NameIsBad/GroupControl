@@ -20,15 +20,6 @@ namespace GroupControl.Model
 
         public string PullNativePath { get; set; }
 
-
-        public int LeftWidth { get; set; }
-
-        public int RightWidth { get; set; }
-
-        public int TopHeight { get; set; }
-
-        public int BottomHeight { get; set; }
-
         /// <summary>
         /// 是否统计粉丝数
         /// </summary>

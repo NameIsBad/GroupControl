@@ -295,7 +295,7 @@ namespace GroupControl.Helper
         /// 打开App
         /// </summary>
         /// <param name="device"></param>
-        public void OpenApp(string device, string packageName, string directUIPageName, Action<Action<string>> whileAction)
+        public void OpenApp(string device, string packageName, string directUIPageName, Action<Func<string,string>> whileAction)
         {
             ///回到主界面
             InitProcessWithTaskState(device, " shell input keyevent 3");
@@ -312,12 +312,14 @@ namespace GroupControl.Helper
 
                 if (null == list || list.Count == 0)
                 {
-                    return;
+                    return string.Empty;
                 }
 
                 stateStr = string.Join("|", list);
 
                 Thread.Sleep(200);
+
+                return stateStr;
 
             });
         }
@@ -681,7 +683,7 @@ namespace GroupControl.Helper
             while (!stateStr.Contains(pageName) && validateIndex < 5)
             {
 
-                if (isCircle == false)
+                if(!isCircle)
                 {
                     ////是否被移除
                     var isRemove = CheckEquipmentIsConnecting(currentDevice);
@@ -749,7 +751,6 @@ namespace GroupControl.Helper
             }
         }
 
-
         public void UnlockSingleScreen(string device)
         {
             var state = GetIsLock(device);
@@ -810,6 +811,56 @@ namespace GroupControl.Helper
             }
 
             return viewModel;
+        }
+
+
+        /// <summary>
+        ///分析手机中的页面布局
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public T CreatUIXML<T>(T t, Func<T, XmlDocument, T> func) where T:BaseViewModel
+        {
+            t.PullNativePath = string.Format(@"{0}\{1}", SingleHepler<ConfigInfo>.Instance.CutImageFileUrl, t.Device);
+
+            if (!Directory.Exists(t.PullNativePath))
+            {
+                Directory.CreateDirectory(t.PullNativePath);
+            }
+
+            ///生成当前页面的xml文档
+            InitProcessWithTaskState(t.Device, string.Format("shell uiautomator dump /sdcard/{0}.xml", t.XMLName));
+
+            //下载到本地电脑
+            InitProcessWithTaskState(t.Device, string.Format("pull /sdcard/{0}.xml {1}", t.XMLName, t.PullNativePath));
+
+            var filePath = string.Format(@"{0}\{1}.xml", t.PullNativePath, t.XMLName);
+
+            if (File.Exists(filePath))
+            {
+                XmlDocument doc = new XmlDocument();
+
+                string path = filePath;
+
+                try
+                {
+                    doc.Load(path);
+
+                    #region 进行检测
+
+                    return func(t, doc);
+
+                    #endregion
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            return t;
         }
 
         public PictureBox GetPictureFromControl(Control panel)
@@ -881,6 +932,200 @@ namespace GroupControl.Helper
             return isRemove;
         }
 
+
+        #region 上传本地文件到手机
+
+        /// <summary>
+        /// 本地文件上传到手机
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public UploadFilesToPhoneViewModel UploadToPhine(UploadFilesToPhoneViewModel viewModel)
+        {
+            var folder = new DirectoryInfo(viewModel.Path);
+
+            var files = folder.GetFiles();
+
+            viewModel.Files = files;
+
+            var fullPath = Path.Combine(viewModel.Path, "content.txt");
+
+            if (File.Exists(fullPath))
+            {
+                using (var fileStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
+                    {
+                        viewModel.Content = streamReader.ReadToEnd();
+
+                        streamReader.Close();
+                    }
+
+                    fileStream.Close();
+
+                }
+            }
+
+            if ((null == files || files.ToList().Count == 0) && string.IsNullOrEmpty(viewModel.Content))
+            {
+                return default(UploadFilesToPhoneViewModel);
+            }
+
+            //删除文件夹
+            InitProcessWithTaskState(viewModel.Device, "shell rm -r /sdcard/ZQKj/", true);
+
+            ///创建文件夹
+            InitProcessWithTaskState(viewModel.Device, "shell mkdir /sdcard/ZQKj", true);
+
+            if (null != files && files.Count() > 0)
+            {
+
+                files.OrderByDescending(o => o.Name).ToList().ForEach((o) =>
+                {
+                    var direction = string.Format("push {0} /sdcard/ZQKj", o.FullName);
+
+                    if (!o.Extension.Equals(".txt"))
+                    {
+                        var returnData =InitProcessWithTaskState(viewModel.Device, direction, true);
+
+                        ///刷新单图  要不然 微信 图片选择器中的图片 不显示
+                        InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d  file:///storage/emulated/0/ZQKj/" + o.Name, true);
+
+                    }
+
+                });
+
+
+                ////批量刷新  要不然 微信 图片选择器中的图片 不显示
+                //_baseAction.InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d  file:///storage/emulated/0/ZQKj/", true);
+            }
+
+            return viewModel;
+        }
+
+        #endregion
+
+
+        #region  解析手机当前控件的起始坐标 终止坐标
+
+        /// <summary>
+        /// 解析手机当前控件的起始坐标 终止坐标
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <param name="strValue"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public T GetStartBoundsWithEndBounds<T>(WXActionViewModel viewModel, string strValue, Func<WXActionViewModel, T> func = null) where T : class
+        {
+
+            if (!string.IsNullOrEmpty(strValue))
+            {
+                var list = strValue.Replace("[", "").Replace(",", "|").Replace("]", "|").Split('|').ToList().Where(q => !string.IsNullOrEmpty(q)).ToList();
+
+                viewModel.LeftWidth = int.Parse(list.FirstOrDefault());
+
+                viewModel.RightWidth = int.Parse(list.Skip(2).Take(1).FirstOrDefault());
+
+                viewModel.TopHeight = int.Parse(list.Skip(1).Take(1).FirstOrDefault());
+
+                viewModel.BottomHeight = int.Parse(list.LastOrDefault());
+
+                return func(viewModel);
+
+            }
+
+            return viewModel as T;
+        }
+
+        /// <summary>
+        /// 解析手机当前控件的起始坐标 终止坐标
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <param name="strValue"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public T GetStartBoundsWithEndBounds<T>(BaseViewModel viewModel, string strValue, Func<BaseViewModel, T> func = null) where T : BaseViewModel
+        {
+
+            if (!string.IsNullOrEmpty(strValue))
+            {
+                var list = strValue.Replace("[", "").Replace(",", "|").Replace("]", "|").Split('|').ToList().Where(q => !string.IsNullOrEmpty(q)).ToList();
+
+                viewModel.LeftWidth = int.Parse(list.FirstOrDefault());
+
+                viewModel.RightWidth = int.Parse(list.Skip(2).Take(1).FirstOrDefault());
+
+                viewModel.TopHeight = int.Parse(list.Skip(1).Take(1).FirstOrDefault());
+
+                viewModel.BottomHeight = int.Parse(list.LastOrDefault());
+
+                func?.Invoke(viewModel);
+
+            }
+
+            return viewModel as T;
+        }
+
+        #endregion
+
+
+        #region 点击选择图片
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="wmPoint"></param>
+        /// <param name="device"></param>
+        /// <param name="initX">X初始值</param>
+        /// <param name="initY">Y初始值</param>
+        /// <param name="incrementX">X增量</param>
+        /// <param name="incrementY">Y增量</param>
+        public void  SelectImage(IList<FileInfo> files,WMPoint wmPoint,string device,int initX,int initY,int incrementX,int incrementY)
+        {
+            if (null != files && files.Count > 0)
+            {
+
+                var x = initX;
+
+                var y = initY;
+
+                var index = 1;
+
+                files.ToList().ForEach((file) =>
+                {
+
+                    if (file.Extension.Equals(".txt"))
+                    {
+                        return;
+                    }
+
+                    WMPoint wmPointModel =ConvertPointWithDiffentWM(device, x, y, wmPoint);
+
+                    var direction = func(wmPointModel, "shell input tap");
+
+                    ///图片中选择
+                    InitProcessWithTaskState(device, direction);
+
+                    if (index % 4 == 0)
+                    {
+                        x = incrementX;
+
+                        y += incrementY;
+                    }
+                    else
+                    {
+                        x += incrementX;
+                    }
+
+                    index++;
+
+                });
+            }
+        }
+
+        #endregion
 
         #region 导入通讯录
 
@@ -1124,7 +1369,6 @@ namespace GroupControl.Helper
                 using (var stringWrite = new System.IO.StreamWriter(fileStream))
                 {
 
-
                     list.ToList().ForEach((item) =>
                     {
                         stringWrite.WriteLine("BEGIN:VCARD");
@@ -1159,7 +1403,6 @@ namespace GroupControl.Helper
 
             viewModel.SourceFilePath = fileName;
         }
-
 
         #endregion
 
@@ -1205,9 +1448,7 @@ namespace GroupControl.Helper
 
         #endregion
 
-
         #endregion
-
 
         #region 执行任务 关注任务状态
 
@@ -1400,7 +1641,6 @@ namespace GroupControl.Helper
 
         #endregion
 
-
         #region 获取本机MAC地址
 
         public string GetMacAddress()
@@ -1436,7 +1676,6 @@ namespace GroupControl.Helper
         }
 
         #endregion
-
 
     }
 

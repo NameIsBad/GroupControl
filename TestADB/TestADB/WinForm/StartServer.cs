@@ -108,10 +108,10 @@ namespace GroupControl.WinForm
 
                     deviceList = CheckIsHaveAuthorizedEquipment(deviceList);
 
-                    if (deviceList!=null && deviceList.Count>0)
+                    if (deviceList != null && deviceList.Count > 0)
                     {
                         //去除设备号重复
-                        deviceList = deviceList.Where((x, i) => deviceList.ToList().FindIndex(q=>q.Equals(x))==i).ToList();
+                        deviceList = deviceList.Where((x, i) => deviceList.ToList().FindIndex(q => q.Equals(x)) == i).ToList();
                     }
 
                     baseAction.Devices = deviceList;
@@ -263,7 +263,7 @@ namespace GroupControl.WinForm
         /// </summary>
         private void TimerWithThread()
         {
-            _threadTimer = new System.Threading.Timer(ThreadTimeAction,null,Timeout.Infinite,Timeout.Infinite);
+            _threadTimer = new System.Threading.Timer(ThreadTimeAction, null, Timeout.Infinite, Timeout.Infinite);
 
             ///立即触发
             _threadTimer.Change(0, Timeout.Infinite);
@@ -326,6 +326,8 @@ namespace GroupControl.WinForm
 
                     var ksHepler = SingleHepler<KSHelper>.Instance;
 
+                    var idleHepler = SingleHepler<IdleFishHelper>.Instance;
+
                     var taskArray = new List<Task>();
 
                     switch (currentTask.AutoServiceInfoModel.ServiceType)
@@ -370,12 +372,17 @@ namespace GroupControl.WinForm
 
                         case EnumTaskType.KSAction:
 
-                            taskArray = ksHepler.BatchAction(new KSViewModel() { Devices= currentTask.Devices, Comments=currentTask.AutoServiceInfoModel.SayHelloContent,PhotoIDs=currentTask.AutoServiceInfoModel.RemarkContent }).ToList();
+                            taskArray = ksHepler.BatchAction(new KSViewModel() { Devices = currentTask.Devices, Comments = currentTask.AutoServiceInfoModel.SayHelloContent, PhotoIDs = currentTask.AutoServiceInfoModel.RemarkContent }).ToList();
 
                             break;
                         case EnumTaskType.SendGroupMessage:
 
                             taskArray = wxHepler.BatchSendMessageToGroup(currentTask).ToList();
+
+                            break;
+                        case EnumTaskType.SendIdleFishPost:
+
+                            taskArray = idleHepler.BatchPublishMessageinfo(currentTask).ToList();
 
                             break;
 
@@ -386,7 +393,7 @@ namespace GroupControl.WinForm
 
                     Task.WaitAll(taskArray.ToArray());
 
-                    currentTask.Status =EnumTaskStatus.End;
+                    currentTask.Status = EnumTaskStatus.End;
 
                     baseAction.RemoveEquipmentStateFromQueue();
 
@@ -459,7 +466,7 @@ namespace GroupControl.WinForm
 
             var list = SingleHepler<AutoServiceInfoBLL>.Instance.GetList(new AutoServiceInfoViewModel() { Status = EnumTaskStatus.Start, ComputerID = _currentComputerInfo.ID });
 
-            if (null== list || list.Count == 0)
+            if (null == list || list.Count == 0)
             {
                 _currentAction();
 

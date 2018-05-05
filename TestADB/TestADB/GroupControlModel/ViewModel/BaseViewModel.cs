@@ -23,6 +23,18 @@ namespace GroupControl.Model
 
         public string Device { get; set; }
 
+        public int LeftWidth { get; set; }
+
+        public int RightWidth { get; set; }
+
+        public int TopHeight { get; set; }
+
+        public int BottomHeight { get; set; }
+
+        public string PullNativePath { get; set; }
+
+        public string XMLName { get; set; }
+
         /// <summary>
         /// 查询条件
         /// </summary>
