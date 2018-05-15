@@ -34,11 +34,13 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txt_content = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.Send = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.SetStartDate = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.startdate = new System.Windows.Forms.DateTimePicker();
             this.starttime = new System.Windows.Forms.DateTimePicker();
             this.flowLayoutPanelWithEquipment = new System.Windows.Forms.FlowLayoutPanel();
@@ -49,9 +51,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.txt_title = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.txt_price = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
@@ -121,13 +123,13 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "间隔时间(min)";
             // 
-            // textBox3
+            // txt_content
             // 
-            this.textBox3.Location = new System.Drawing.Point(8, 20);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(964, 65);
-            this.textBox3.TabIndex = 0;
+            this.txt_content.Location = new System.Drawing.Point(8, 20);
+            this.txt_content.Multiline = true;
+            this.txt_content.Name = "txt_content";
+            this.txt_content.Size = new System.Drawing.Size(964, 65);
+            this.txt_content.TabIndex = 0;
             // 
             // flowLayoutPanel1
             // 
@@ -159,25 +161,45 @@
             // 
             // SetStartDate
             // 
+            this.SetStartDate.Controls.Add(this.label5);
+            this.SetStartDate.Controls.Add(this.label4);
             this.SetStartDate.Controls.Add(this.startdate);
             this.SetStartDate.Controls.Add(this.starttime);
             this.SetStartDate.Location = new System.Drawing.Point(3, 3);
             this.SetStartDate.Name = "SetStartDate";
-            this.SetStartDate.Size = new System.Drawing.Size(205, 78);
+            this.SetStartDate.Size = new System.Drawing.Size(289, 78);
             this.SetStartDate.TabIndex = 15;
             this.SetStartDate.TabStop = false;
             this.SetStartDate.Text = "启动时间";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(25, 24);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "日期：";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(25, 56);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "时间：";
+            // 
             // startdate
             // 
-            this.startdate.Location = new System.Drawing.Point(7, 18);
+            this.startdate.Location = new System.Drawing.Point(82, 18);
             this.startdate.Name = "startdate";
             this.startdate.Size = new System.Drawing.Size(188, 21);
             this.startdate.TabIndex = 0;
             // 
             // starttime
             // 
-            this.starttime.Location = new System.Drawing.Point(7, 50);
+            this.starttime.Location = new System.Drawing.Point(85, 50);
             this.starttime.Name = "starttime";
             this.starttime.Size = new System.Drawing.Size(186, 21);
             this.starttime.TabIndex = 1;
@@ -234,7 +256,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.txt_content);
             this.groupBox1.Location = new System.Drawing.Point(20, 113);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(981, 99);
@@ -254,38 +276,38 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.textBox4);
-            this.groupBox2.Location = new System.Drawing.Point(214, 3);
+            this.groupBox2.Controls.Add(this.txt_title);
+            this.groupBox2.Location = new System.Drawing.Point(298, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(451, 78);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "标题";
             // 
-            // textBox4
+            // txt_title
             // 
-            this.textBox4.Location = new System.Drawing.Point(7, 16);
-            this.textBox4.Multiline = true;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(438, 52);
-            this.textBox4.TabIndex = 0;
+            this.txt_title.Location = new System.Drawing.Point(7, 16);
+            this.txt_title.Multiline = true;
+            this.txt_title.Name = "txt_title";
+            this.txt_title.Size = new System.Drawing.Size(438, 52);
+            this.txt_title.TabIndex = 0;
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.textBox5);
-            this.groupBox5.Location = new System.Drawing.Point(671, 3);
+            this.groupBox5.Controls.Add(this.txt_price);
+            this.groupBox5.Location = new System.Drawing.Point(755, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(288, 78);
+            this.groupBox5.Size = new System.Drawing.Size(197, 78);
             this.groupBox5.TabIndex = 17;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "价格";
             // 
-            // textBox5
+            // txt_price
             // 
-            this.textBox5.Location = new System.Drawing.Point(6, 16);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 21);
-            this.textBox5.TabIndex = 0;
+            this.txt_price.Location = new System.Drawing.Point(6, 16);
+            this.txt_price.Name = "txt_price";
+            this.txt_price.Size = new System.Drawing.Size(185, 21);
+            this.txt_price.TabIndex = 0;
             // 
             // panel1
             // 
@@ -345,6 +367,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.SetStartDate.ResumeLayout(false);
+            this.SetStartDate.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -370,7 +393,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txt_content;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button Send;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -389,8 +412,10 @@
         private System.Windows.Forms.RadioButton radioButton5;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox txt_title;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox txt_price;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
     }
 }

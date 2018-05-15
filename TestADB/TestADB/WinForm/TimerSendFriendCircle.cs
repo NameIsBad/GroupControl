@@ -462,7 +462,6 @@ namespace GroupControl.WinForm
 
             }
 
-
             try
             {
 

@@ -208,6 +208,19 @@ namespace GroupControl.WinForm
 
                 var devicesWithNickList = SingleHepler<DeviceToNickNameBLL>.Instance.GetEquipmentListWithGroupInfo(new DeviceToNickNameViewModel() { Devices = devices });
 
+                if (devicesWithNickList!=null && devicesWithNickList.Count>0)
+                {
+                    devicesWithNickList=devicesWithNickList.OrderBy(o => {
+
+                        var defaluteNum = 0;
+
+                        int.TryParse(o.NickName, out defaluteNum);
+
+                        return defaluteNum;
+
+                    }).ToList();
+                }
+
                 ShowCheckBoxWithEquipmentList(parentControl, devicesWithNickList, viewModel);
 
             });

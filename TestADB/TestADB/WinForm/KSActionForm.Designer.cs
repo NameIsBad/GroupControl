@@ -54,7 +54,7 @@
             this.groupBox1.Controls.Add(this.flowLayoutPanelWithEquipment);
             this.groupBox1.Location = new System.Drawing.Point(266, 109);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(792, 651);
+            this.groupBox1.Size = new System.Drawing.Size(792, 416);
             this.groupBox1.TabIndex = 22;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "设备";
@@ -64,7 +64,7 @@
             this.flowLayoutPanelWithEquipment.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelWithEquipment.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanelWithEquipment.Name = "flowLayoutPanelWithEquipment";
-            this.flowLayoutPanelWithEquipment.Size = new System.Drawing.Size(786, 631);
+            this.flowLayoutPanelWithEquipment.Size = new System.Drawing.Size(786, 396);
             this.flowLayoutPanelWithEquipment.TabIndex = 0;
             // 
             // groupBox7
@@ -72,7 +72,7 @@
             this.groupBox7.Controls.Add(this.flowLayoutPanelWithGroup);
             this.groupBox7.Location = new System.Drawing.Point(12, 109);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(251, 651);
+            this.groupBox7.Size = new System.Drawing.Size(251, 416);
             this.groupBox7.TabIndex = 23;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "分组";
@@ -82,7 +82,7 @@
             this.flowLayoutPanelWithGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelWithGroup.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanelWithGroup.Name = "flowLayoutPanelWithGroup";
-            this.flowLayoutPanelWithGroup.Size = new System.Drawing.Size(245, 631);
+            this.flowLayoutPanelWithGroup.Size = new System.Drawing.Size(245, 396);
             this.flowLayoutPanelWithGroup.TabIndex = 0;
             // 
             // groupBox2
@@ -168,7 +168,7 @@
             // 
             // KSAction
             // 
-            this.KSAction.Location = new System.Drawing.Point(955, 780);
+            this.KSAction.Location = new System.Drawing.Point(958, 576);
             this.KSAction.Name = "KSAction";
             this.KSAction.Size = new System.Drawing.Size(100, 34);
             this.KSAction.TabIndex = 27;
@@ -180,7 +180,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 826);
+            this.ClientSize = new System.Drawing.Size(1070, 630);
             this.Controls.Add(this.KSAction);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.SetStartDate);

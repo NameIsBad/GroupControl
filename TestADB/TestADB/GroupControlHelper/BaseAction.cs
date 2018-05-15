@@ -39,11 +39,18 @@ namespace GroupControl.Helper
 
         private Control _currentSameScreenControl;
 
+        private IList<string> _upLoadPathList;
+
+        private string _fileRootPath;
+
         public delegate void TagTaskState(UpdateWithTaskStateViewModel viewModel);
 
         public TagTaskState _tagTaskState;
 
         public int _maxPort = 8000;
+
+        public EnumPublishContentType _publishContentType;
+
 
         /// <summary>
         /// 分辨率为720*1280 的手机  从坐标之间的差距  
@@ -75,14 +82,14 @@ namespace GroupControl.Helper
         /// <summary>
         ///根据不同的手机分辨率 换算出点击的点的坐标
         /// </summary>
-        public Func<WMPoint,WMPoint, string, string> swipFunc = (wmPoint1,wmPoint2, deviceStr) =>
-        {
+        public Func<WMPoint, WMPoint, string, string> swipFunc = (wmPoint1, wmPoint2, deviceStr) =>
+         {
 
-            return string.Format("{0} {1} {2} {3} {4} 2000", deviceStr, wmPoint1.WM_X, wmPoint1.WM_Y, wmPoint2.WM_X, wmPoint2.WM_Y);
+             return string.Format("{0} {1} {2} {3} {4} 2000", deviceStr, wmPoint1.WM_X, wmPoint1.WM_Y, wmPoint2.WM_X, wmPoint2.WM_Y);
 
-        };
+         };
 
-        public Action<string, int, int,WMPoint> actionDirectStr
+        public Action<string, int, int, WMPoint> actionDirectStr
         {
             get
             {
@@ -204,6 +211,48 @@ namespace GroupControl.Helper
         }
 
         /// <summary>
+        /// 文件根路径
+        /// </summary>
+        public string FileRootPath
+        {
+            get
+            {
+                return _fileRootPath;
+            }
+            set
+            {
+                _fileRootPath = value;
+            }
+        }
+
+        /// <summary>
+        /// 文件根路径
+        /// </summary>
+        public IList<string> UpLoadPathList
+        {
+            get
+            {
+                if (_upLoadPathList == null || _upLoadPathList.Count == 0)
+                {
+                    _upLoadPathList = new List<string>();
+                }
+
+                return _upLoadPathList;
+            }
+            set
+            {
+                _upLoadPathList = value;
+            }
+        }
+
+        public EnumPublishContentType PublishContentType
+        {
+            get { return _publishContentType; }
+
+            set { _publishContentType = value; }
+        }
+
+        /// <summary>
         /// 记录每个任务中设备状态
         /// </summary>
         public Lazy<Queue<Dictionary<string, EnumTaskState>>> TaskStateQueue
@@ -295,7 +344,7 @@ namespace GroupControl.Helper
         /// 打开App
         /// </summary>
         /// <param name="device"></param>
-        public void OpenApp(string device, string packageName, string directUIPageName, Action<Func<string,string>> whileAction)
+        public void OpenApp(string device, string packageName, string directUIPageName, Action<Func<string, string>> whileAction)
         {
             ///回到主界面
             InitProcessWithTaskState(device, " shell input keyevent 3");
@@ -306,9 +355,10 @@ namespace GroupControl.Helper
             //开启app
             InitProcessWithTaskState(device, string.Format("shell am start {0}", directUIPageName), true);
 
-            whileAction((stateStr)=> {
+            whileAction((stateStr) =>
+            {
 
-                var list =InitProcessWithTaskState(device, " shell dumpsys window | grep mCurrentFocus", true);
+                var list = InitProcessWithTaskState(device, " shell dumpsys window | grep mCurrentFocus", true);
 
                 if (null == list || list.Count == 0)
                 {
@@ -683,7 +733,7 @@ namespace GroupControl.Helper
             while (!stateStr.Contains(pageName) && validateIndex < 5)
             {
 
-                if(!isCircle)
+                if (!isCircle)
                 {
                     ////是否被移除
                     var isRemove = CheckEquipmentIsConnecting(currentDevice);
@@ -821,7 +871,7 @@ namespace GroupControl.Helper
         /// <param name="t"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public T CreatUIXML<T>(T t, Func<T, XmlDocument, T> func) where T:BaseViewModel
+        public T CreatUIXML<T>(T t, Func<T, XmlDocument, T> func) where T : BaseViewModel
         {
             t.PullNativePath = string.Format(@"{0}\{1}", SingleHepler<ConfigInfo>.Instance.CutImageFileUrl, t.Device);
 
@@ -986,7 +1036,7 @@ namespace GroupControl.Helper
 
                     if (!o.Extension.Equals(".txt"))
                     {
-                        var returnData =InitProcessWithTaskState(viewModel.Device, direction, true);
+                        var returnData = InitProcessWithTaskState(viewModel.Device, direction, true);
 
                         ///刷新单图  要不然 微信 图片选择器中的图片 不显示
                         InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d  file:///storage/emulated/0/ZQKj/" + o.Name, true);
@@ -1082,7 +1132,7 @@ namespace GroupControl.Helper
         /// <param name="initY">Y初始值</param>
         /// <param name="incrementX">X增量</param>
         /// <param name="incrementY">Y增量</param>
-        public void  SelectImage(IList<FileInfo> files,WMPoint wmPoint,string device,int initX,int initY,int incrementX,int incrementY)
+        public void SelectImage(IList<FileInfo> files, WMPoint wmPoint, string device, int initX, int initY, int incrementX, int incrementY)
         {
             if (null != files && files.Count > 0)
             {
@@ -1101,7 +1151,7 @@ namespace GroupControl.Helper
                         return;
                     }
 
-                    WMPoint wmPointModel =ConvertPointWithDiffentWM(device, x, y, wmPoint);
+                    WMPoint wmPointModel = ConvertPointWithDiffentWM(device, x, y, wmPoint);
 
                     var direction = func(wmPointModel, "shell input tap");
 
@@ -1676,6 +1726,189 @@ namespace GroupControl.Helper
         }
 
         #endregion
+
+        /// <summary>
+        /// 执行命令 切换输入法
+        /// </summary>
+        public bool InstallKeyBoardApp(string device, string currentTypeWrittingID)
+        {
+
+            ///com.android.adbkeyboard/.AdbIME
+            ///com.sohu.inputmethod.sogou/.SogouIME
+            ///切换输入法
+            var list = InitProcess(device, string.Format("shell ime enable  {0}", currentTypeWrittingID), true);
+
+            var returnStr = string.Join("|", list);
+
+            if (returnStr.Contains("enabled"))
+            {
+                list = InitProcess(device, string.Format("shell ime set {0}", currentTypeWrittingID), true);
+
+                returnStr = string.Join("|", list);
+
+                ///选择输入法
+                if (returnStr.Contains("selected"))
+                {
+
+                    return true;
+
+                }
+            }
+
+            return false;
+        }
+
+
+        #region 保存文件到本地
+
+        /// <summary>
+        /// 单个手机发送朋友圈
+        /// </summary>
+        /// <param name="relativePath"></param>
+        /// <param name="currentSelectContentType"></param>
+        public void SaveFileToNative(string relativePath, Action<string> saveContentAction=null)
+        {
+
+            try
+            {
+                var path = string.Format(@"{0}\{1}", _fileRootPath, relativePath);
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                switch (_publishContentType)
+                {
+                    case EnumPublishContentType.PictureAndWord:
+
+                        Parallel.Invoke(() =>
+                        {
+                            SaveImages(path);
+
+                        }, () =>
+                        {
+
+                            /// SaveContent(path);
+                            /// 
+                            saveContentAction?.Invoke(path);
+
+                        });
+
+
+                        break;
+
+                    case EnumPublishContentType.VedioAndWord:
+
+                        Parallel.Invoke(() =>
+                        {
+                            SaveImages(path);
+
+                        }, () =>
+                        {
+
+                            // SaveContent(path);
+
+                            saveContentAction?.Invoke(path);
+
+                        });
+
+
+                        break;
+
+                    case EnumPublishContentType.LinkAndWord:
+
+                        saveContentAction?.Invoke(path);
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void SaveImages(string path)
+        {
+
+            if (_upLoadPathList == null || _upLoadPathList.Count == 0)
+            {
+                return;
+            }
+
+            var index = 1;
+
+            _upLoadPathList.ToList().ForEach((item) =>
+            {
+
+                try
+                {
+                    if (File.Exists(item))
+                    {
+                        using (var fileStream = new FileStream(item, FileMode.Open, FileAccess.Read))
+                        {
+
+                            var currentByte = new byte[fileStream.Length];
+
+                            fileStream.Read(currentByte, 0, currentByte.Length);
+
+                            var extension = Path.GetExtension(item).ToLower();
+
+                            if (_publishContentType == EnumPublishContentType.PictureAndWord)
+                            {
+                                extension = ".png";
+                            }
+
+                            var fileName = string.Format("{0}{1}{2}", DateTime.Now.ToString("yyyyMMddHHmmss") + DateTime.Now.Millisecond, index, extension);
+
+                            var fullName = Path.Combine(path, fileName);
+
+                            File.WriteAllBytes(fullName, currentByte);
+
+                            fileStream.Close();
+
+                        }
+                    }
+
+                    index++;
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            });
+        }
+
+        /// <summary>
+        /// 获取本地保存文件路径
+        /// </summary>
+        /// <param name="currentSendType"></param>
+        public void GetNativeRootPath(EnumSendType currentSendType)
+        {
+            switch (currentSendType)
+            {
+                case EnumSendType.AutoSend:
+
+                    _fileRootPath = SingleHepler<ConfigInfo>.Instance.AutoSendFriendFileUrl;
+
+                    break;
+                case EnumSendType.HandSend:
+
+                    _fileRootPath = SingleHepler<ConfigInfo>.Instance.HandSendFriendFileUrl;
+
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        #endregion
+
 
     }
 

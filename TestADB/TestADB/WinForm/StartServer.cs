@@ -330,22 +330,29 @@ namespace GroupControl.WinForm
 
                     var taskArray = new List<Task>();
 
+                    Func<AutoServiceInfoViewModel, AutoServiceInfoViewModel> initFunc = (task) =>
+                    {
+                        var rootPath = SingleHepler<ConfigInfo>.Instance.AutoSendFriendFileUrl;
+
+                        if (task.AutoServiceInfoModel.SendType == EnumSendType.HandSend)
+                        {
+                            rootPath = SingleHepler<ConfigInfo>.Instance.HandSendFriendFileUrl;
+                        }
+
+                        var root = string.Format(@"{0}\{1}", rootPath, task.AutoServiceInfoModel.MapUrl);
+
+                        task.Path = root;
+
+                        task.PublishContentType = task.AutoServiceInfoModel.ContentType;
+
+                        return task;
+                    };
+
                     switch (currentTask.AutoServiceInfoModel.ServiceType)
                     {
                         case EnumTaskType.SendFriendCircle:
 
-                            var rootPath = SingleHepler<ConfigInfo>.Instance.AutoSendFriendFileUrl;
-
-                            if (currentTask.AutoServiceInfoModel.SendType == EnumSendType.HandSend)
-                            {
-                                rootPath = SingleHepler<ConfigInfo>.Instance.HandSendFriendFileUrl;
-                            }
-
-                            var root = string.Format(@"{0}\{1}", rootPath, currentTask.AutoServiceInfoModel.MapUrl);
-
-                            currentTask.Path = root;
-
-                            currentTask.PublishContentType = currentTask.AutoServiceInfoModel.ContentType;
+                            currentTask=initFunc(currentTask);
 
                             taskArray = wxHepler.BatchSendFriendCircle(currentTask).ToList();
 
@@ -382,7 +389,9 @@ namespace GroupControl.WinForm
                             break;
                         case EnumTaskType.SendIdleFishPost:
 
-                            taskArray = idleHepler.BatchPublishMessageinfo(currentTask).ToList();
+                            currentTask = initFunc(currentTask);
+
+                           // taskArray = idleHepler.BatchPublishMessageinfo(currentTask).ToList();
 
                             break;
 

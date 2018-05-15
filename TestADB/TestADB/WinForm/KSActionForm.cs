@@ -61,7 +61,17 @@ namespace GroupControl.WinForm
 
         private void button1_Click(object sender, EventArgs e)
         {
+            OpenLive();
 
+           // this.Close();
+        }
+
+
+        /// <summary>
+        /// 普通操作
+        /// </summary>
+        public void GeneralAction()
+        {
             var startDate = DateTime.Parse(string.Format("{0} {1}", _startDate.ToString("yyyy-MM-dd"), _startTime.ToString("HH:mm")));
 
             var viewModel = new AutoServiceInfoViewModel()
@@ -87,8 +97,78 @@ namespace GroupControl.WinForm
             viewModel.GroupIDs = GetCheckedEquipmentName(this.flowLayoutPanelWithGroup);
 
             CreateTaskToQueue(viewModel);
+        }
 
-            this.Close();
+
+        /// <summary>
+        /// 打开主播房间
+        /// </summary>
+        public void OpenLive()
+        {
+            var ksViewModel = new KSViewModel() { PhotoIDs= this.photosText.Text};
+
+            if (_taskQueue.Count > 0)
+            {
+                CustomDialog();
+
+                return;
+            }
+
+            if (baseAction.Devices == null || baseAction.Devices.Count == 0)
+            {
+                return;
+            }
+
+            var checkList = GetCheckedEquipmentName(this.flowLayoutPanelWithEquipment);
+
+            if (checkList==null || checkList.Count==0)
+            {
+                checkList = baseAction.Devices;
+            }
+
+            if (ksViewModel.PhotoIDList == null || ksViewModel.PhotoIDList.Count()==0)
+            {
+                return;
+            }
+
+            Task.Factory.StartNew(() =>
+            {
+                var index = 0;
+
+                if (checkList.Count >= ksViewModel.PhotoIDList.Count)
+                {
+                    ksViewModel.PhotoIDList.ToList().ForEach(o =>
+                    {
+                        Task.Factory.StartNew((i) =>
+                        {
+                            var currentIndex = int.Parse(i.ToString());
+
+                            SingleHepler<KSHelper>.Instance.SingleOpenLive(o, checkList.Skip(currentIndex).Take(1).FirstOrDefault());
+
+                        },index);
+
+                        index++;
+                    });
+                }
+                else
+                {
+                    checkList.ToList().ForEach(o =>
+                    {
+                        
+                        Task.Factory.StartNew((i) =>
+                        {
+                            var currentIndex = int.Parse(i.ToString());
+
+                            SingleHepler<KSHelper>.Instance.SingleOpenLive(ksViewModel.PhotoIDList.Skip(currentIndex).Take(1).FirstOrDefault(), o);
+
+                        }, index);
+
+                        index++;
+                    });
+                }
+
+            });
+
         }
     }
 }

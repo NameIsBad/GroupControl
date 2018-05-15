@@ -140,25 +140,6 @@ namespace GroupControl.Helper
             }
         }
 
-        public void GetNativeRootPath(EnumSendType currentSendType)
-        {
-            switch (currentSendType)
-            {
-                case EnumSendType.AutoSend:
-
-                    _rootPath = SingleHepler<ConfigInfo>.Instance.AutoSendFriendFileUrl;
-
-                    break;
-                case EnumSendType.HandSend:
-
-                    _rootPath = SingleHepler<ConfigInfo>.Instance.HandSendFriendFileUrl;
-
-                    break;
-                default:
-                    break;
-            }
-        }
-
         /// <summary>
         ///保存文字内容
         /// </summary>
@@ -1627,6 +1608,30 @@ namespace GroupControl.Helper
             }
 
             return strBD.ToString();
+        }
+
+        /// <summary>
+        /// 获取本地保存文件路径
+        /// </summary>
+        /// <param name="currentSendType"></param>
+        public void GetNativeRootPath(EnumSendType currentSendType)
+        {
+            switch (currentSendType)
+            {
+                case EnumSendType.AutoSend:
+
+                    _rootPath = SingleHepler<ConfigInfo>.Instance.AutoSendFriendFileUrl;
+
+                    break;
+                case EnumSendType.HandSend:
+
+                    _rootPath = SingleHepler<ConfigInfo>.Instance.HandSendFriendFileUrl;
+
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

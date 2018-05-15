@@ -66,6 +66,7 @@
             this.更改输入法 = new System.Windows.Forms.ToolStripMenuItem();
             this.按编号搜索 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.主播ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -260,7 +261,8 @@
             // 快手ToolStripMenuItem
             // 
             this.快手ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.关注点赞评论ToolStripMenuItem});
+            this.关注点赞评论ToolStripMenuItem,
+            this.主播ToolStripMenuItem});
             this.快手ToolStripMenuItem.Name = "快手ToolStripMenuItem";
             this.快手ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.快手ToolStripMenuItem.Text = "快手";
@@ -378,6 +380,13 @@
             this.flowLayoutPanel3.Size = new System.Drawing.Size(1370, 719);
             this.flowLayoutPanel3.TabIndex = 3;
             // 
+            // 主播ToolStripMenuItem
+            // 
+            this.主播ToolStripMenuItem.Name = "主播ToolStripMenuItem";
+            this.主播ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.主播ToolStripMenuItem.Text = "主播";
+            this.主播ToolStripMenuItem.Click += new System.EventHandler(this.主播ToolStripMenuItem_Click);
+            // 
             // WorkPlaceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -436,6 +445,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.ToolStripMenuItem 手动发贴ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 定时发贴ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 主播ToolStripMenuItem;
     }
 }
 

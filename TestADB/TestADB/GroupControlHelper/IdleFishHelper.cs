@@ -44,6 +44,154 @@ namespace GroupControl.Helper
             }
         }
 
+        /// <summary>
+        /// 选择分类  CategoryActivity
+        /// </summary>
+        private Action<IdleFishActionViewModel, WMPoint> CategoryAction
+        {
+            get
+            {
+                return (viewModel, wmPoint) =>
+                {
+
+                    ///点击分类
+                    baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
+
+                    //循环检测是否出现价格输入页面
+                    baseAction.CircleDetection("CategoryActivity", viewModel.Device, false);
+
+                    viewModel.XMLName = "categoryactivity";
+
+                    //输入价格
+                    baseAction.CreatUIXML<IdleFishActionViewModel>(viewModel, (o, doc) =>
+                    {
+                        XmlNode node = doc.SelectSingleNode("//node[@resource-id='com.taobao.idlefish:id/category_sub_view']");
+
+                        var strValue = node.Attributes["bounds"].Value;
+
+                        var boundsModel = baseAction.GetStartBoundsWithEndBounds<IdleFishActionViewModel>(o, strValue);
+
+                        baseAction.actionDirectStr(viewModel.Device, (boundsModel.LeftWidth + boundsModel.RightWidth) / 2, (boundsModel.TopHeight + boundsModel.BottomHeight) / 2, wmPoint);
+
+                        return boundsModel;
+
+                    });
+
+                };
+            }
+        }
+
+        /// <summary>
+        ///输入价格
+        /// </summary>
+        public Action<IdleFishActionViewModel, WMPoint> PriceAction
+        {
+            get
+            {
+                return (viewModel, wmPoint) =>
+                {
+                    ///点击价格
+                    baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
+
+                    //循环检测是否出现价格输入页面
+                    baseAction.CircleDetection("PopupWindow", viewModel.Device, false);
+
+                    viewModel.XMLName = "inputprice";
+
+                    //输入价格
+                    baseAction.CreatUIXML<IdleFishActionViewModel>(viewModel, (o, doc) =>
+                    {
+                        XmlNode node = doc.SelectSingleNode("//node[@resource-id='com.taobao.idlefish:id/input_price']");
+
+                        var strValue = node.Attributes["bounds"].Value;
+
+                        var boundsModel = baseAction.GetStartBoundsWithEndBounds<IdleFishActionViewModel>(o, strValue);
+
+                        ///点击text 获取焦点
+                        baseAction.actionDirectStr(viewModel.Device, (boundsModel.LeftWidth + boundsModel.RightWidth) / 2, (boundsModel.TopHeight + boundsModel.BottomHeight) / 2, wmPoint);
+
+                        ///输入文字
+                        baseAction.InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a ADB_INPUT_TEXT --es msg '" + viewModel.Price + "'");
+
+                        //确定
+                        baseAction.actionDirectStr(viewModel.Device, 100, 100, wmPoint);
+
+                        return boundsModel;
+
+                    });
+                };
+            }
+        }
+
+        /// <summary>
+        ///输入标题或者内容
+        /// </summary>
+        public Action<IdleFishActionViewModel, WMPoint> TxtAction
+        {
+            get
+            {
+                return (viewModel, wmPoint) =>
+                {
+                    ///点击text 获取焦点
+                    baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
+
+                    ///输入文字
+                    baseAction.InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a ADB_INPUT_TEXT --es msg '" + viewModel.CurrentContent + "'");
+                };
+            }
+        }
+
+        /// <summary>
+        /// 点击确认发布按钮
+        /// </summary>
+        private Action<IdleFishActionViewModel, WMPoint> ClickAction
+        {
+            get
+            {
+                return (viewModel, wmPoint) =>
+                 {
+                     var stateStr = string.Empty;
+
+                    ///点击按钮
+                    baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
+
+                    //检测微信运行状态
+                    while (stateStr.Contains("PublishActivity"))
+                     {
+
+                        ////是否被移除
+                        var isRemove = baseAction.CheckEquipmentIsConnecting(viewModel.Device);
+
+                         if (isRemove)
+                         {
+                             return;
+                         }
+
+                         var list = baseAction.InitProcessWithTaskState(viewModel.Device, " shell dumpsys window | grep mCurrentFocus", true);
+
+                         if (null == list || list.Count == 0)
+                         {
+                             return;
+                         }
+
+                         stateStr = string.Join("|", list);
+
+                         if (!stateStr.Contains("PublishActivity"))
+                         {
+                             return;
+                         }
+
+                         Thread.Sleep(1000);
+
+                        ///点击按钮
+                        baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
+
+                     }
+                 };
+            }
+        }
+
+
 
         /// <summary>
         /// 打开闲鱼
@@ -57,7 +205,7 @@ namespace GroupControl.Helper
 
                 while (!stateStr.Contains("MainActivity"))
                 {
-                    action(stateStr);
+                    stateStr = action(stateStr);
                 }
 
             });
@@ -96,6 +244,9 @@ namespace GroupControl.Helper
         /// </summary>
         public void SinglePublishMessageInfo(IdleFishActionViewModel idleFishViewModel, UploadFilesToPhoneViewModel uploadFilesViewModel)
         {
+
+            OpenIdleFish(idleFishViewModel.Device);
+
             ///获取当前手机的分辨率
             var wmPoint = baseAction.GetWMSize(idleFishViewModel.Device);
 
@@ -153,119 +304,43 @@ namespace GroupControl.Helper
 
             currentViewModel.XMLName = "publishactivity";
 
-            //输入标题或者描述
-            Action<IdleFishActionViewModel> inputAction = (viewModel) =>
-            {
-
-                ///点击text 获取焦点
-                baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
-
-                ///输入文字
-                baseAction.InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a ADB_INPUT_TEXT --es msg '" + viewModel.Description + "'");
-
-            };
-
-            ///输入价格
-            Action<IdleFishActionViewModel> inputAndClickAction = (viewModel) =>
-             {
-                 ///点击价格
-                 baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
-
-                 //循环检测是否出现价格输入页面
-                 baseAction.CircleDetection("PopupWindow", idleFishViewModel.Device, false);
-
-                 //输入价格
-                 baseAction.CreatUIXML<IdleFishActionViewModel>(currentViewModel, (o, doc) =>
-                 {
-                     XmlNode node = doc.SelectSingleNode("com.taobao.idlefish:id/input_price");
-
-                     var strValue = node.Attributes["bounds"].Value;
-
-                     var boundsModel = baseAction.GetStartBoundsWithEndBounds<IdleFishActionViewModel>(o, strValue);
-
-                     ///点击text 获取焦点
-                     baseAction.actionDirectStr(viewModel.Device, (boundsModel.LeftWidth + boundsModel.RightWidth) / 2, (boundsModel.TopHeight + boundsModel.BottomHeight) / 2, wmPoint);
-
-                     ///输入文字
-                     baseAction.InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a ADB_INPUT_TEXT --es msg '" + viewModel.Price + "'");
-
-                     //确定
-                     baseAction.actionDirectStr(viewModel.Device, 100, 100, wmPoint);
-
-                     return boundsModel;
-
-                 });
-             };
-
-            //点击确认发布按钮
-            Action<IdleFishActionViewModel> clickAction = (viewModel) =>
-            {
-                var stateStr = string.Empty;
-
-                ///点击按钮
-                baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
-
-                //检测微信运行状态
-                while (stateStr.Contains("PublishActivity"))
-                {
-
-                    ////是否被移除
-                    var isRemove = baseAction.CheckEquipmentIsConnecting(viewModel.Device);
-
-                    if (isRemove)
-                    {
-                        return;
-                    }
-
-                    var list = baseAction.InitProcessWithTaskState(viewModel.Device, " shell dumpsys window | grep mCurrentFocus", true);
-
-                    if (null == list || list.Count == 0)
-                    {
-                        return;
-                    }
-
-                    stateStr = string.Join("|", list);
-
-                    if (!stateStr.Contains("PublishActivity"))
-                    {
-                        return;
-                    }
-
-                    Thread.Sleep(1000);
-
-                    ///点击按钮
-                    baseAction.actionDirectStr(viewModel.Device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
-
-                }
-            };
-
             ///分析布局
-            Action<IdleFishActionViewModel, string, XmlDocument, Action<IdleFishActionViewModel>> func = (model, xmlSelectStr, doc, action) =>
-            {
+            Action<IdleFishActionViewModel, string, XmlDocument, Action<IdleFishActionViewModel, WMPoint>> func = (model, xmlSelectStr, doc, action) =>
+             {
                 ///标题
                 XmlNode node = doc.SelectSingleNode(xmlSelectStr);
 
-                var strValue = node.Attributes["bounds"].Value;
+                 var strValue = node.Attributes["bounds"].Value;
 
-                var returnData = baseAction.GetStartBoundsWithEndBounds<IdleFishActionViewModel>(model, strValue);
+                 var returnData = baseAction.GetStartBoundsWithEndBounds<IdleFishActionViewModel>(model, strValue);
 
-                action(returnData);
+                 returnData.CurrentContent = returnData.Title;
 
-            };
+                 if (xmlSelectStr.Contains("content"))
+                 {
+                     returnData.CurrentContent = returnData.Description;
+                 }
+
+                 action(returnData, wmPoint);
+
+             };
 
             baseAction.CreatUIXML<IdleFishActionViewModel>(currentViewModel, (o, doc) =>
             {
                 ///标题
-                func(o, "//node[@resource-id='com.taobao.idlefish:id/title']", doc, inputAction);
+                func(o, "//node[@resource-id='com.taobao.idlefish:id/title']", doc, TxtAction);
 
                 ///描述
-                func(o, "//node[@resource-id='com.taobao.idlefish:id/content']", doc, inputAction);
+                func(o, "//node[@resource-id='com.taobao.idlefish:id/content']", doc, TxtAction);
 
                 ///价格
-                func(o, "//node[@resource-id='com.taobao.idlefish:id/price']", doc, inputAndClickAction);
+                func(o, "//node[@resource-id='com.taobao.idlefish:id/price']", doc, PriceAction);
+
+                //分类
+                func(o, "//node[@resource-id='com.taobao.idlefish:id/cate_name']", doc, CategoryAction);
 
                 //确认发布按钮
-                func(o, "//node[@resource-id='com.taobao.idlefish:id/publish_button']", doc, clickAction);
+                func(o, "//node[@resource-id='com.taobao.idlefish:id/publish_button']", doc, ClickAction);
 
                 return o;
 

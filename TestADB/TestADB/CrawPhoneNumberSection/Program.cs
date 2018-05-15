@@ -30,18 +30,42 @@ namespace CrawPhoneNumberSection
             try
             {
 
-                var str = "123";
+                var list = new List<Test>() {
+                    new Test() { name = "2", nickName = "2" },
+                    new Test() { name = "1", nickName = "1" },
+                    new Test() { name = "3", nickName = "3" },
+                    new Test() { name = "3", nickName = "acv" }
+                };
 
-                Console.WriteLine(str.GetType().ToString());
+                Console.WriteLine(JsonConvert.SerializeObject(list));
 
-                if (str.GetType().Equals(typeof(string)))
-                {
-                    Console.WriteLine("this is type string");
-                }
+                list =list.OrderBy(o => {
 
-                var data = 23.00;
+                    var defaluteNum = 0;
 
-                Console.WriteLine(data.GetType().ToString());
+                    int.TryParse(o.nickName, out defaluteNum);
+
+                    return defaluteNum;
+
+
+                }).ToList();
+
+                Console.WriteLine(JsonConvert.SerializeObject(list));
+
+                Console.Read();
+
+                //var str = "123";
+
+                //Console.WriteLine(str.GetType().ToString());
+
+                //if (str.GetType().Equals(typeof(string)))
+                //{
+                //    Console.WriteLine("this is type string");
+                //}
+
+                //var data = 23.00;
+
+                //Console.WriteLine(data.GetType().ToString());
 
 
                 //Task.Factory.StartNew(() =>
@@ -230,5 +254,13 @@ namespace CrawPhoneNumberSection
 
             return await reader.ReadToEndAsync();
         }
+    }
+
+    public class Test {
+         
+       public  string name { get; set; }
+
+       public string nickName { get; set; }
+
     }
 }

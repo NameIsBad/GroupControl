@@ -213,6 +213,8 @@ namespace GroupControl.WinForm
 
             form.Text = "闲鱼手动发贴";
 
+            form.Tag = EnumSendType.HandSend;
+
             ShowForm(form);
         }
 
@@ -227,6 +229,8 @@ namespace GroupControl.WinForm
             SendIdleFishPost form = new SendIdleFishPost();
 
             form.Text = "闲鱼自动发贴";
+
+            form.Tag = EnumSendType.AutoSend;
 
             ShowForm(form);
         }
@@ -395,6 +399,8 @@ namespace GroupControl.WinForm
             KSActionForm form = new KSActionForm();
 
             form.Text = (sender as ToolStripMenuItem).Text;
+
+            form.Tag = EnumSendType.AutoSend;
 
             ShowForm(form);
         }
@@ -962,8 +968,18 @@ namespace GroupControl.WinForm
             });
         }
 
+
         #endregion
 
+        private void 主播ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            KSActionForm form = new KSActionForm();
 
+            form.Text = (sender as ToolStripMenuItem).Text;
+
+            form.Tag = EnumSendType.HandSend;
+
+            ShowForm(form);
+        }
     }
 }

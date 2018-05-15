@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace GroupControl.Helper
 {
@@ -27,7 +28,7 @@ namespace GroupControl.Helper
 
                 while (!stateStr.Contains("HomeActivity"))
                 {
-                    action(stateStr);
+                    stateStr=action(stateStr);
                 }
 
             });
@@ -41,7 +42,7 @@ namespace GroupControl.Helper
         public void EnterPhotoDetailByPhotoID(string photoID, string device)
         {
             //进入详情页  4307533760
-            _baseAction.InitProcessWithTaskState(device, string.Format(" shell am  start -n com.smile.gifmaker/com.yxcorp.gifshow.detail.PhotoDetailActivity -d {0} ",photoID));
+            var returnData=_baseAction.InitProcessWithTaskState(device, string.Format(" shell am  start -n com.smile.gifmaker/com.yxcorp.gifshow.detail.PhotoDetailActivity -d {0} ",photoID));
 
             _baseAction.CircleDetection("PhotoDetailActivity", device);
         }
@@ -148,6 +149,73 @@ namespace GroupControl.Helper
                 _baseAction.actionDirectStr(viewModel.Device, 50, 50, wmPoint);
 
             });
+        }
+
+        /// <summary>
+        /// 打开单个直播  一个手机 同时只有一个直播
+        /// </summary>
+        public void SingleOpenLive(string photoID,string device)
+        {
+            _baseAction.UnlockSingleScreen(device);
+
+            var wmPoint = _baseAction.GetWMSize(device);
+
+            OpenKS(device);
+
+            //点击左上角
+            _baseAction.actionDirectStr(device, 50, 50, wmPoint);
+
+            //点击查找
+            _baseAction.actionDirectStr(device, 100, 641, wmPoint);
+
+            //循环检测是否进入查找页面
+            _baseAction.CircleDetection("SearchActivity", device);
+
+            var viewModel = _baseAction.CreatUIXML(new KSViewModel() { Device=device}, (o, doc) =>
+            {
+
+                ///resource-id="com.smile.gifmaker:id/editor"
+                XmlNode editorNode = doc.SelectSingleNode("//node[@resource-id='com.smile.gifmaker:id/editor']");
+
+                var strValue = editorNode.Attributes["bounds"].Value;
+
+                return _baseAction.GetStartBoundsWithEndBounds<KSViewModel>(o, strValue);
+
+            });
+
+            //切换输入法
+            _baseAction.InstallKeyBoardApp(device, "com.android.adbkeyboard/.AdbIME");
+
+            //获取文本框焦点
+            _baseAction.actionDirectStr(device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
+
+            ///输入文字
+            _baseAction.InitProcessWithTaskState(viewModel.Device, "shell am broadcast -a ADB_INPUT_TEXT --es msg '" + photoID + "'");
+
+            //还原输入法
+            _baseAction.InstallKeyBoardApp(device, "com.sohu.inputmethod.sogou/.SogouIME");
+
+            //获取文本框焦点
+            _baseAction.actionDirectStr(device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
+
+            //点击确定
+            _baseAction.actionDirectStr(device, 655, 1210, wmPoint);
+
+            Thread.Sleep(1000);
+
+            //viewModel=_baseAction.CreatUIXML(new KSViewModel() { Device = device }, (o, doc) =>
+            //{
+            //    XmlNode editorNode = doc.SelectSingleNode("//node[@resource-id='com.smile.gifmaker:id/name']");
+
+            //    var strValue = editorNode.Attributes["bounds"].Value;
+
+            //    return _baseAction.GetStartBoundsWithEndBounds<KSViewModel>(o, strValue);
+
+            //});
+
+            //进入个人详情页
+            //_baseAction.actionDirectStr(device, (viewModel.LeftWidth + viewModel.RightWidth) / 2, (viewModel.TopHeight + viewModel.BottomHeight) / 2, wmPoint);
+            _baseAction.actionDirectStr(device,342, 421, wmPoint);
         }
     }
 }
